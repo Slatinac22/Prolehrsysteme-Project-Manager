@@ -49,10 +49,12 @@ Stream<HandmadeUser?> get user {
   // Register with email/password
   Future registerWithEmailPassword(String email, String password) async {
     try {
+      //AuthResult == UserCredential
       UserCredential result = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+      //User == FirebaseUser
       User? user = result.user;
       return _userFromFirebaseUser(user!);
     } catch (e) {
