@@ -1,22 +1,21 @@
+// ignore_for_file: prefer_const_constructors, avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:project_manager/services/auth.dart';
 
-class SignIn extends StatefulWidget {
-  const SignIn({Key? key}) : super(key: key);
-
-
+class Register extends StatefulWidget {
+  const Register({super.key});
 
   @override
-  State<SignIn> createState() => _SignInState();
+  State<Register> createState() => _RegisterState();
 }
 
-class _SignInState extends State<SignIn> {
+class _RegisterState extends State<Register> {
+
   final AuthService _auth = AuthService();
 
-  //Text field state
   String email = '';
   String password = '';
-
 
 
   @override
@@ -25,7 +24,7 @@ class _SignInState extends State<SignIn> {
       backgroundColor: Colors.purple[200],
       appBar: AppBar(
         backgroundColor: Colors.purple[400],
-        title: Text('Sign in'),
+        title: Text('Register'),
       ),
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
@@ -63,7 +62,7 @@ class _SignInState extends State<SignIn> {
                   print(password);
                 },
                 child: Text(
-                  'Sign in',
+                  'Register',
                   style: TextStyle(color: Colors.white),
                 ),
               ),
