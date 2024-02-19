@@ -75,8 +75,7 @@ class _RegisterState extends State<Register> {
               SizedBox(height: 20.0),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.pink[400],
-                  onPrimary: Colors.white,
+                  backgroundColor: Colors.pink[400],
                 ),
                 onPressed: () async {
                   // Handle sign-in button press

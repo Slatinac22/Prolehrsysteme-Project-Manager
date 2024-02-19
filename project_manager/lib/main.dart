@@ -1,3 +1,4 @@
+// ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:project_manager/models/user.dart';
@@ -5,9 +6,7 @@ import 'package:project_manager/screens/wrapper.dart';
 import 'package:project_manager/services/auth.dart';
 import 'package:provider/provider.dart';
 
-
 void main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
@@ -16,7 +15,8 @@ void main() async {
       appId: "1:1019738645122:web:e0edcbffa7ce9f646e0a9b",
       messagingSenderId: "1019738645122",
       projectId: "prolehrsysteme-project-m-c7547",
-      ));
+    ),
+  );
 
   runApp(const MyApp());
 }
