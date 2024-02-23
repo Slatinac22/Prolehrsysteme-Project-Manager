@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:project_manager/models/user.dart';
+import 'package:project_manager/services/database.dart';
 
 
 class AuthService {
@@ -56,7 +57,11 @@ Stream<HandmadeUser?> get user {
       );
       //User == FirebaseUser
       User? user = result.user;
-      return _userFromFirebaseUser(user!);
+
+      // Create a new document for the user with the uid
+      await DatabaseService(uid: user!.uid).updateUserData('0', 'new crew member', 100);
+
+      return _userFromFirebaseUser(user);
     } catch (e) {
       print(e.toString());
       return null;
