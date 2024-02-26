@@ -59,7 +59,7 @@ Stream<HandmadeUser?> get user {
       User? user = result.user;
 
       // Create a new document for the user with the uid
-      await DatabaseService(uid: user!.uid).updateUserData('0', 'new crew member', 100);
+      await DatabaseService(uid: user!.uid).updateUserData('1', 'new new crew member', 50);
 
       return _userFromFirebaseUser(user);
     } catch (e) {

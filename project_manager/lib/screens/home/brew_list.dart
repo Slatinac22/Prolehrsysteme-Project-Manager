@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:project_manager/screens/home/brew_tile.dart';
 import 'package:provider/provider.dart';
 import 'package:project_manager/models/brew.dart';
 
@@ -18,12 +19,15 @@ class _BrewListState extends State<BrewList> {
 
       final brews = Provider.of<List<Brew>>(context);
 
-      brews.forEach((brew){
-        print(brew.name);
-        print(brew.sugars);
-        print(brew.strength);
-      })  ;
 
-    return Container();
+
+
+
+    return ListView.builder(
+      itemCount: brews.length,
+      itemBuilder: (context, index) {
+        return BrewTile(brew: brews[index]);
+      } ,
+    );
   }
 }
