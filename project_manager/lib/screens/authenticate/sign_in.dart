@@ -35,15 +35,7 @@ class _SignInState extends State<SignIn> {
       appBar: AppBar(
         backgroundColor: Colors.purple[400],
         title: Text('Sign in'),
-        actions: <Widget>[
-          ElevatedButton.icon(
-            icon: Icon(Icons.person),
-            label: Text('Register'),
-            onPressed: () {
-              widget.toggleView();
-            },
-          )
-        ],
+
       ),
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),

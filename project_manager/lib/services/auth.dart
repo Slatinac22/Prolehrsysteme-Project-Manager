@@ -19,19 +19,6 @@ Stream<HandmadeUser?> get user {
 } 
 
 
-
-  // Sign in anonymously
-  Future signInAnon() async {
-    try {
-      UserCredential result = await _auth.signInAnonymously();
-      User? user = result.user;
-      return _userFromFirebaseUser(user);
-    } catch (e) {
-      print(e.toString());
-      return null;
-    }
-  }
-
   // Sign in with email/password
   Future signInWithEmailPassword(String email, String password) async {
     try {
@@ -47,26 +34,7 @@ Stream<HandmadeUser?> get user {
     }
   }
 
-  // Register with email/password
-  Future registerWithEmailPassword(String email, String password) async {
-    try {
-      //AuthResult == UserCredential
-      UserCredential result = await _auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      //User == FirebaseUser
-      User? user = result.user;
 
-      // Create a new document for the user with the uid
-      await DatabaseService(uid: user!.uid).updateUserData('1', 'new new crew member', 50);
-
-      return _userFromFirebaseUser(user);
-    } catch (e) {
-      print(e.toString());
-      return null;
-    }
-  }
 
   // Sign out
   Future signOut() async {

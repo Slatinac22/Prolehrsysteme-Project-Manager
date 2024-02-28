@@ -1,9 +1,7 @@
 
 class HandmadeUser {
   final String? uid;
-
   HandmadeUser({this.uid});
-  
 }
 
 

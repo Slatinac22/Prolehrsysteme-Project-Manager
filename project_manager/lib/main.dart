@@ -32,6 +32,7 @@ class MyApp extends StatelessWidget {
       value: AuthService().user, // Accepts nullable HandmadeUser
       initialData: null, // You can provide initial data here if needed
       child: MaterialApp(
+        debugShowCheckedModeBanner: false, // Set debugShowCheckedModeBanner to false
         home: Wrapper(),
       ),
     );
