@@ -52,7 +52,7 @@ class _ProjectEditPageState extends State<ProjectEditPage> {
             ElevatedButton(
       
               // Inside onPressed callback of the "Save Changes" button in ProjectEditPage
-// Inside onPressed callback of the "Save Changes" button in ProjectEditPage
+
                 onPressed: () async {
                   // Get updated project information from text controllers
                   String updatedNaziv = _nazivController.text;

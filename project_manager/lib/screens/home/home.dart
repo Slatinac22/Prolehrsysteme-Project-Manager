@@ -4,6 +4,7 @@ import 'package:project_manager/screens/project_detail_page.dart';
 import 'package:project_manager/screens/admin_panel.dart'; // Import the AdminPanel screen
 import 'package:project_manager/services/auth.dart';
 import 'package:project_manager/services/database.dart';
+import 'package:project_manager/models/user.dart';
 
 class Home extends StatelessWidget {
   final AuthService _auth = AuthService();
@@ -24,13 +25,42 @@ class Home extends StatelessWidget {
               await _auth.signOut();
             },
           ),
-          IconButton( // Add a button to navigate to the admin panel
-            icon: Icon(Icons.admin_panel_settings),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => AdminPanel()), // Navigate to the AdminPanel screen
-              );
+          FutureBuilder<String?>(
+            future: _auth.getCurrentUserID(), // Fetch current user ID
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator();
+              } else if (snapshot.hasData) {
+                String userId = snapshot.data!; // Retrieve user ID
+                return FutureBuilder<String?>(
+                  future: _databaseService.getUserRole(userId), // Fetch user role
+                  builder: (context, roleSnapshot) {
+                    if (roleSnapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator();
+                    } else if (roleSnapshot.hasData) {
+                      String? userRole = roleSnapshot.data;
+                      if (userRole == 'admin') {
+                        return IconButton( // Add a button to navigate to the admin panel
+                          icon: Icon(Icons.admin_panel_settings),
+                          tooltip:'Moderator',
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => AdminPanel()), // Navigate to the AdminPanel screen
+                            );
+                          },
+                        );
+                      } else {
+                        return Text('User role: $userRole'); // Display user role if not admin
+                      }
+                    } else {
+                      return Text('Role data not available'); // Handle case when role data is not available
+                    }
+                  },
+                );
+              } else {
+                return Text('No ID available'); // Display message if user ID is not available
+              }
             },
           ),
         ],

@@ -1,8 +1,17 @@
 
 class HandmadeUser {
   final String? uid;
-  HandmadeUser({this.uid});
+  final String? role; 
+  final String? email;
+  HandmadeUser({this.uid, this.role, this.email});
 }
+
+
+
+
+
+
+
 
 
 class UserData{
