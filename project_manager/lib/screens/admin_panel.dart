@@ -4,6 +4,7 @@ import 'package:project_manager/screens/project_detail_page.dart';
 import 'package:project_manager/screens/project_edit_page.dart';
 import 'package:project_manager/services/auth.dart';
 import 'package:project_manager/services/database.dart';
+import 'package:project_manager/screens/admin_edit_project_page.dart';
 
 class AdminPanel extends StatelessWidget {
   final AuthService _auth = AuthService();
@@ -41,7 +42,7 @@ class AdminPanel extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => ProjectDetailPage(project: project)),
+                      MaterialPageRoute(builder: (context) => AdminProjectDetailPage(project: project)),
                     );
                   },
                   onLongPress: () {

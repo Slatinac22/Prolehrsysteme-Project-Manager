@@ -13,18 +13,11 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.purple[50],
+      backgroundColor: Color.fromARGB(99, 194, 239, 249),
       appBar: AppBar(
         title: Text('Project Manager'),
-        backgroundColor: Colors.purple[400],
+        backgroundColor: Color.fromARGB(100, 60, 181, 208),
         actions: <Widget>[
-          ElevatedButton.icon(
-            icon: Icon(Icons.person),
-            label: Text('Logout'),
-            onPressed: () async {
-              await _auth.signOut();
-            },
-          ),
           FutureBuilder<String?>(
             future: _auth.getCurrentUserID(), // Fetch current user ID
             builder: (context, snapshot) {
@@ -39,16 +32,28 @@ class Home extends StatelessWidget {
                       return CircularProgressIndicator();
                     } else if (roleSnapshot.hasData) {
                       String? userRole = roleSnapshot.data;
-                      if (userRole == 'admin') {
-                        return IconButton( // Add a button to navigate to the admin panel
-                          icon: Icon(Icons.admin_panel_settings),
-                          tooltip:'Moderator',
+                      if (userRole == 'admin' || userRole == 'moderator') {
+                        return ElevatedButton( // ElevatedButton for Administrator
                           onPressed: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(builder: (context) => AdminPanel()), // Navigate to the AdminPanel screen
                             );
                           },
+                          child: Row( // Row to contain icon and text
+                            children: [
+                              Icon(
+                                Icons.admin_panel_settings,
+                                color: Colors.black, // Set color of the icon to blue
+                                size: 32, // Set the size of the icon (adjust as needed)
+                              ), // Icon for Administrator
+                              SizedBox(width: 8), // Add some space between icon and text
+                              Text(
+                                'Administrator',
+                                style: TextStyle(color: Colors.black,fontSize: 20), // Set color of the text to blue
+                              ), // Text for Administrator
+                            ],
+                          ),
                         );
                       } else {
                         return Text('User role: $userRole'); // Display user role if not admin
@@ -62,6 +67,19 @@ class Home extends StatelessWidget {
                 return Text('No ID available'); // Display message if user ID is not available
               }
             },
+          ),
+          Row(
+            children: [
+              SizedBox(width:12),
+              ElevatedButton.icon(
+                icon: Icon(Icons.logout_rounded,color:Colors.black),
+                
+                label: Text('Odjavi se',style: TextStyle(color: Colors.black,fontSize: 20),),
+                onPressed: () async {
+                  await _auth.signOut();
+                },
+              ),
+            ],
           ),
         ],
       ),

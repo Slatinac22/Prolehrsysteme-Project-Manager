@@ -3,12 +3,11 @@ import 'package:project_manager/models/project.dart';
 import 'package:project_manager/screens/project_edit_page.dart';
 import 'package:project_manager/services/database.dart'; 
 
-// Import the DatabaseService
 
-class ProjectDetailPage extends StatelessWidget {
+class AdminProjectDetailPage extends StatelessWidget {
   final Project project;
 
-  ProjectDetailPage({required this.project});
+  AdminProjectDetailPage({required this.project});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +31,15 @@ class ProjectDetailPage extends StatelessWidget {
                   Text('Project ID: ${updatedProject.id}'),
                   Text('Project Address: ${updatedProject.adresa}'),
                   // Add more project-specific information as needed
-
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ProjectEditPage(project: updatedProject)),
+                      );
+                    },
+                    child: Text('Edit Project'),
+                  ),
                 ],
               );
             }
