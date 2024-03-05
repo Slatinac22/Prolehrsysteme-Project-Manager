@@ -45,9 +45,9 @@ class ProjectDetailPage extends StatelessWidget {
                 childAspectRatio: 3,
                 children: [
                   buildButton(context, 'Ponude', PonudePage(projectId: updatedProject.id), Colors.blue),
-                  buildButton(context, 'Plan Produkcije', PlanProdukcijePage(), Colors.green),
-                  buildButton(context, 'Nabavka i Produkcija', NabavkaIProdukcijaPage(), Colors.orange),
-                  buildButton(context, 'Skladiste i Transport', SkladisteITransportPage(), Colors.purple),
+                  buildButton(context, 'Plan Produkcije', PlanProdukcijePage(projectId: updatedProject.id), Colors.green),
+                  buildButton(context, 'Nabavka i Produkcija', NabavkaIProdukcijaPage(projectId: updatedProject.id), Colors.orange),
+                  buildButton(context, 'Skladiste i Transport', SkladisteITransportPage(projectId: updatedProject.id), Colors.purple),
                   buildButton(context, 'Montaza', MontazaPage(), Colors.red),
                   buildButton(context, 'Verifikacija Projekta', VerifikacijaProjektaPage(), Colors.teal),
                   buildButton(context, 'Kolicina', KolicinaPage(), Colors.indigo),
@@ -64,8 +64,8 @@ class ProjectDetailPage extends StatelessWidget {
   }
 
 Widget buildButton(BuildContext context, String text, Widget destination, Color color) {
-  if (text == 'Ponude' || text == 'Nabavka i Produkcija') {
-    String imageName = text == 'Ponude' ? 'handshake.jpg' : 'produkcija.jpg';
+  if (text == 'Ponude' || text == 'Nabavka i Produkcija' || text == 'Plan Produkcije' || text == 'Skladiste i Transport') {
+    String imageName = text == 'Ponude' ? 'handshake.jpg' : text == 'Nabavka i Produkcija' ? 'produkcija.jpg' : text == 'Plan Produkcije' ? 'planProdukcije.jpg' : 'skladiste_i_transport.jpg';
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -80,7 +80,7 @@ Widget buildButton(BuildContext context, String text, Widget destination, Color 
         Positioned.fill(
           top: text == 'Ponude' ? -10 : 0, // Adjust the top position based on the button text
           child: Container(
-            color: text == 'Ponude' ? Colors.blue.withOpacity(0.5) : Colors.orange.withOpacity(0.5), // Blue color for 'Ponude' and orange color for 'Nabavka i Produkcija' with opacity
+            color: text == 'Ponude' ? Colors.blue.withOpacity(0.5) : text == 'Nabavka i Produkcija' ? Colors.orange.withOpacity(0.5) : text == 'Plan Produkcije' ? Colors.green.withOpacity(0.5) : Colors.purple.withOpacity(0.5), // Blue color for 'Ponude', orange color for 'Nabavka i Produkcija', green color for 'Plan Produkcije', and purple color for 'Skladiste i Transport' with opacity
           ),
         ),
         SizedBox(
@@ -100,7 +100,26 @@ Widget buildButton(BuildContext context, String text, Widget destination, Color 
                 borderRadius: BorderRadius.circular(10), // Button border radius
               ),
             ),
-            child: Text(text, style: TextStyle(fontSize: 18)), // Button text
+            child: Center(
+              child: Text(
+                text,
+                style: TextStyle(
+                  fontSize: MediaQuery.of(context).size.width * 0.045,
+                  fontFamily: 'Pacifico', // Example of using a custom font
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  decorationThickness: 2,
+                  decorationStyle: TextDecorationStyle.double, // Use double line style
+                  shadows: [
+                    Shadow(
+                      blurRadius: 4,
+                      color: Colors.black.withOpacity(0.5),
+                      offset: Offset(2, 2),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
         ),
       ],
@@ -121,14 +140,15 @@ Widget buildButton(BuildContext context, String text, Widget destination, Color 
           borderRadius: BorderRadius.circular(10), // Button border radius
         ),
       ),
-      child: Text(text, style: TextStyle(fontSize: 18)), // Button text
+      child: Text(
+        text,
+        style: TextStyle(
+          fontSize: 18,
+          color: Colors.black, // Adding black color to the text
+        ),
+      ),
     );
   }
 }
-
-
-
-
-
 
 }

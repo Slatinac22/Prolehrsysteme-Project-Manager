@@ -72,6 +72,8 @@ flutter:
     - assets/signInImage.jpg
     - assets/handshake.jpg
     - assets/produkcija.jpg
+    - assets/planProdukcije.jpg
+    - assets/skladiste_i_transport.jpg
 
 
 

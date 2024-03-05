@@ -9,6 +9,13 @@ class Project {
   String ponuda;
   String datum_dobijanja_ponude;
   String status_ponude;
+  String nabavka_materijala;
+  String produkcija;
+  String skladiste;
+  String planirani_datum_transporta;
+  String nije_planiran_datum_transporta;
+  String poslato;
+
   String id;
 
   Project({
@@ -18,6 +25,12 @@ class Project {
     this.ponuda = ' ',
     this.datum_dobijanja_ponude = '',
     this.status_ponude = '',
+    this.nabavka_materijala = '',
+    this.produkcija = '',
+    this.skladiste = '',
+    this.planirani_datum_transporta = '',
+    this.nije_planiran_datum_transporta = '',
+    this.poslato = '',
   });
 
   // Method to update the adresa property
@@ -38,6 +51,12 @@ class Project {
       ponuda: data['ponuda'] ?? '',
       datum_dobijanja_ponude: data['datum_dobijanja_ponude'] ?? '',
       status_ponude: data['status_ponude'] ?? '',
+      nabavka_materijala: data['nabavka_materijala'] ?? '',
+      produkcija: data['produkcija'] ?? '',
+      skladiste: data['skladiste'] ?? '',
+      planirani_datum_transporta: data['planirani_datum_transporta'],
+      nije_planiran_datum_transporta: data['nije_planiran_datum_transporta'],
+      poslato: data['poslato'] ?? '',
 
     );
   }

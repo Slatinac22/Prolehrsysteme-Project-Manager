@@ -142,8 +142,12 @@ Future<void> deleteProject(String projectId) async {
   Future<void> addProject(Project project) async {
     try {
       await _firestore.collection('projects').add({
+        'id' : project.id,
         'naziv': project.naziv,
         'adresa': project.adresa,
+        'ponuda': project.ponuda,
+        'datum_dobijanja_ponude': project.datum_dobijanja_ponude,
+        'status_ponude' : project.status_ponude
         // Add other fields if needed
       });
     } catch (e) {
