@@ -70,6 +70,8 @@ flutter:
 
   assets:
     - assets/signInImage.jpg
+    - assets/handshake.jpg
+    - assets/produkcija.jpg
 
 
 

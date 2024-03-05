@@ -8,6 +8,8 @@ import 'package:project_manager/screens/admin_edit_project_page.dart';
 import 'package:project_manager/screens/add_project_page.dart';
 import 'dart:async';
 
+import 'package:project_manager/shared/colors.dart';
+
 
 class AdminPanel extends StatefulWidget {
   @override
@@ -61,8 +63,10 @@ void _filterProjects(String query) {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+         backgroundColor: AppColors.secondaryColor,
       appBar: AppBar(
         title: Text('Admin Panel'),
+         backgroundColor: AppColors.primaryColor,
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.logout),
@@ -73,8 +77,10 @@ void _filterProjects(String query) {
         ],
       ),
       body: Column(
+        
         children: [
           Padding(
+             
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               controller: _searchController,

@@ -5,6 +5,7 @@ import 'package:project_manager/screens/admin_panel.dart';
 import 'package:project_manager/services/auth.dart';
 import 'package:project_manager/services/database.dart';
 import 'package:project_manager/models/user.dart';
+import 'package:project_manager/shared/colors.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -49,10 +50,10 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(99, 194, 239, 249),
+      backgroundColor: AppColors.secondaryColor,
       appBar: AppBar(
         title: Text('Project Manager'),
-        backgroundColor: Color.fromARGB(100, 60, 181, 208),
+        backgroundColor: AppColors.primaryColor,
         actions: <Widget>[
           FutureBuilder<String?>(
             future: _auth.getCurrentUserID(), // Fetch current user ID
