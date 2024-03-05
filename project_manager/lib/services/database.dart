@@ -25,8 +25,7 @@ class DatabaseService {
       return []; // Return an empty list to indicate failure
     }
   }
-
-  Stream<List<Project>> streamProjects() {
+Stream<List<Project>> streamProjects() {
     return _firestore.collection('projects').snapshots().map((snapshot) {
       return snapshot.docs.map((doc) {
         return Project(
@@ -37,6 +36,21 @@ class DatabaseService {
       }).toList();
     });
   }
+
+
+List<Project> _mapQuerySnapshotToProjects(QuerySnapshot snapshot, String query) {
+  // If the query is empty, return all projects
+  if (query.isEmpty) {
+    return snapshot.docs.map((doc) => Project.fromSnapshot(doc)).toList();
+  }
+
+  // Otherwise, filter projects based on the search query
+  return snapshot.docs
+      .map((doc) => Project.fromSnapshot(doc))
+      .where((project) => project.naziv.toLowerCase().contains(query.toLowerCase()))
+      .toList();
+}
+
 
   // Fetch user role from Firestore collection
 // In auth.dart
@@ -77,7 +91,6 @@ Future<Map<String, dynamic>?> getUserData(String uid) async {
 
 
 
-
   Stream<Project> streamProject(String projectId) {
     return _firestore
         .collection('projects')
@@ -109,4 +122,37 @@ Future<Map<String, dynamic>?> getUserData(String uid) async {
       throw e;
     }
   }
+Future<void> deleteProject(String projectId) async {
+  try {
+    if (projectId != null && projectId.isNotEmpty) {
+      await _firestore.collection('projects').doc(projectId).delete();
+      print('Project deleted successfully');
+    } else {
+      print('Project ID is null or empty');
+    }
+  } catch (e) {
+    print('Error deleting project: $e');
+    // Handle error gracefully, such as showing an error message to the user
+    throw e;
+  }
 }
+
+
+  
+  Future<void> addProject(Project project) async {
+    try {
+      await _firestore.collection('projects').add({
+        'naziv': project.naziv,
+        'adresa': project.adresa,
+        // Add other fields if needed
+      });
+    } catch (e) {
+      print('Error adding project: $e');
+    }
+  }
+
+
+}
+
+
+

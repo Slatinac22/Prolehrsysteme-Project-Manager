@@ -1,14 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:project_manager/models/project.dart';
-
+import 'package:uuid/uuid.dart'; // Import the uuid package
 
 class Project {
   String naziv;
   String adresa;
   String id;
-  
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
 
   Project({
     required this.naziv,
@@ -20,10 +16,10 @@ class Project {
   void updateAdresa(String newAdresa) {
     adresa = newAdresa;
   }
-    void updateNaziv(String newNaziv) {
+
+  void updateNaziv(String newNaziv) {
     naziv = newNaziv;
   }
-
 
   factory Project.fromSnapshot(DocumentSnapshot snapshot) {
     Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
@@ -34,18 +30,16 @@ class Project {
     );
   }
 
-
-
+  static String generateUniqueId() {
+    var uuid = Uuid();
+    return uuid.v4(); // Generate a random UUID
+  }
 
   Stream<Project> streamProject(String projectId) {
-    return _firestore
+    return FirebaseFirestore.instance
         .collection('projects')
         .doc(projectId)
         .snapshots()
         .map((snapshot) => Project.fromSnapshot(snapshot));
   }
-
-
-
-
 }

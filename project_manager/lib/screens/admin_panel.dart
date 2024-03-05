@@ -5,10 +5,58 @@ import 'package:project_manager/screens/project_edit_page.dart';
 import 'package:project_manager/services/auth.dart';
 import 'package:project_manager/services/database.dart';
 import 'package:project_manager/screens/admin_edit_project_page.dart';
+import 'package:project_manager/screens/add_project_page.dart';
+import 'dart:async';
 
-class AdminPanel extends StatelessWidget {
+
+class AdminPanel extends StatefulWidget {
+  @override
+  _AdminPanelState createState() => _AdminPanelState();
+}
+
+class _AdminPanelState extends State<AdminPanel> {
   final AuthService _auth = AuthService();
   final DatabaseService _databaseService = DatabaseService();
+  TextEditingController _searchController = TextEditingController();
+  List<Project> _projects = []; // List to hold all projects
+  List<Project> _filteredProjects = []; // List to hold filtered projects
+  late StreamSubscription<List<Project>> _projectsSubscription; // Late initialization
+
+  @override
+  void initState() {
+    super.initState();
+    _projectsSubscription = _databaseService.streamProjects().listen((projects) {
+      setState(() {
+        _projects = projects;
+        _filteredProjects = projects; // Initially set filtered projects to all projects
+      });
+    });
+  }
+
+void _filterProjects(String query) {
+  setState(() {
+    _filteredProjects = _projects.where((project) {
+      final titleLower = project.naziv.toLowerCase();
+      final queryLower = query.toLowerCase();
+      return titleLower.contains(queryLower);
+    }).toList();
+  });
+}
+
+  @override
+  void dispose() {
+    _projectsSubscription.cancel(); // Dispose of the projects stream subscription
+    super.dispose();
+  }
+  void _fetchProjects() async {
+    _projectsSubscription = _databaseService.streamProjects().listen((projects) {
+      setState(() {
+        _projects = projects;
+        _filteredProjects = projects; // Initially set filtered projects to all projects
+      });
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -24,20 +72,37 @@ class AdminPanel extends StatelessWidget {
           ),
         ],
       ),
-      body: StreamBuilder<List<Project>>(
-        stream: _databaseService.streamProjects(), // Stream of projects
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError || snapshot.data == null || snapshot.data!.isEmpty) {
-            return Center(child: Text('No projects found'));
-          } else {
-            return ListView.builder(
-              itemCount: snapshot.data!.length,
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                hintText: 'Search projects...',
+              ),
+              onChanged: _filterProjects,
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: _filteredProjects.length,
               itemBuilder: (context, index) {
-                Project project = snapshot.data![index];
+                Project project = _filteredProjects[index];
                 return ListTile(
-                  title: Text(project.naziv),
+                  title: Row(
+                    children: [
+                      Expanded(
+                        child: Text(project.naziv),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.delete),
+                        onPressed: () {
+                          _showDeleteConfirmationDialog(context, project.id);
+                        },
+                      ),
+                    ],
+                  ),
                   subtitle: Text(project.adresa),
                   onTap: () {
                     Navigator.push(
@@ -53,16 +118,55 @@ class AdminPanel extends StatelessWidget {
                   },
                 );
               },
-            );
-          }
+            ),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddProjectPage()),
+          );
         },
+        child: Icon(Icons.add),
       ),
     );
   }
-}
 
-void main() {
-  runApp(MaterialApp(
-    home: AdminPanel(),
-  ));
+  Future<void> _showDeleteConfirmationDialog(BuildContext context, String projectId) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirm Deletion'),
+          content: Text('Are you sure you want to delete this project?'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Delete'),
+              onPressed: () async {
+                try {
+                  // Perform the deletion operation
+                  await _databaseService.deleteProject(projectId);
+                  // Update UI after successful deletion
+                  Navigator.of(context).pop();
+                } catch (e) {
+                  print('Error deleting project: $e');
+                  // Handle error if deletion fails
+                  // Optionally, you can show an error message to the user
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
