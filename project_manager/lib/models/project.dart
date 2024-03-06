@@ -22,6 +22,10 @@ class Project {
   String planiran_zavrsetak_montaze;
   String zavrsetak_montaze;
 
+  String datum_verifikacije;
+
+  String kolicina;
+
   String id;
 
   Project({
@@ -43,6 +47,9 @@ class Project {
     this.pocetak_montaze = '',
     this.planiran_zavrsetak_montaze = '',
     this.zavrsetak_montaze = '',
+
+    this.datum_verifikacije = '',
+    this.kolicina = '',
   });
 
   // Method to update the adresa property
@@ -74,7 +81,8 @@ class Project {
       pocetak_montaze: data['pocetak_montaze'] ?? '',
       planiran_zavrsetak_montaze: data['planirani_zavrsetak_montaze'] ?? '',
       zavrsetak_montaze: data['zavrsetak_montaze'] ?? '',
-
+      datum_verifikacije: data['datum_verifikacije'] ?? '',
+      kolicina : data['kolicina'] ?? '',
 
     );
   }
