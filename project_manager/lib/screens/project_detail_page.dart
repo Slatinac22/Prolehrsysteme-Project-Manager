@@ -48,7 +48,7 @@ class ProjectDetailPage extends StatelessWidget {
                   buildButton(context, 'Plan Produkcije', PlanProdukcijePage(projectId: updatedProject.id), Colors.green),
                   buildButton(context, 'Nabavka i Produkcija', NabavkaIProdukcijaPage(projectId: updatedProject.id), Colors.orange),
                   buildButton(context, 'Skladiste i Transport', SkladisteITransportPage(projectId: updatedProject.id), Colors.purple),
-                  buildButton(context, 'Montaza', MontazaPage(), Colors.red),
+                  buildButton(context, 'Montaza', MontazaPage(projectId: updatedProject.id), Colors.red),
                   buildButton(context, 'Verifikacija Projekta', VerifikacijaProjektaPage(), Colors.teal),
                   buildButton(context, 'Kolicina', KolicinaPage(), Colors.indigo),
                   buildButton(context, 'Defekti', DefektiPage(), Colors.lime),

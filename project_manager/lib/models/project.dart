@@ -16,6 +16,12 @@ class Project {
   String nije_planiran_datum_transporta;
   String poslato;
 
+  String dobijen_period_za_montazu;
+  String planiran_pocetak_montaze;
+  String pocetak_montaze;
+  String planiran_zavrsetak_montaze;
+  String zavrsetak_montaze;
+
   String id;
 
   Project({
@@ -31,6 +37,12 @@ class Project {
     this.planirani_datum_transporta = '',
     this.nije_planiran_datum_transporta = '',
     this.poslato = '',
+
+    this.dobijen_period_za_montazu = '',
+    this.planiran_pocetak_montaze = '',
+    this.pocetak_montaze = '',
+    this.planiran_zavrsetak_montaze = '',
+    this.zavrsetak_montaze = '',
   });
 
   // Method to update the adresa property
@@ -57,6 +69,12 @@ class Project {
       planirani_datum_transporta: data['planirani_datum_transporta'],
       nije_planiran_datum_transporta: data['nije_planiran_datum_transporta'],
       poslato: data['poslato'] ?? '',
+      dobijen_period_za_montazu: data['dobijen_period_za_montazu'] ?? '',
+      planiran_pocetak_montaze: data['planirani_pocetak_montaze'] ?? '',
+      pocetak_montaze: data['pocetak_montaze'] ?? '',
+      planiran_zavrsetak_montaze: data['planirani_zavrsetak_montaze'] ?? '',
+      zavrsetak_montaze: data['zavrsetak_montaze'] ?? '',
+
 
     );
   }

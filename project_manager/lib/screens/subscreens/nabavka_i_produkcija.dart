@@ -7,6 +7,7 @@ import 'package:project_manager/shared/colors.dart';
 
 
 class NabavkaIProdukcijaPage extends StatelessWidget {
+  
     final String projectId;
     
   const NabavkaIProdukcijaPage({required this.projectId});
