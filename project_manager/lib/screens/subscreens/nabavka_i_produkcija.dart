@@ -19,7 +19,7 @@ class NabavkaIProdukcijaPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AppColors.primaryColor,
         title: Text(
-          'Plan produkcije',
+          'Nabavka i produkcija',
           style: TextStyle(  
             fontWeight: FontWeight.bold,
           ),

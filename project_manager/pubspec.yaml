@@ -74,7 +74,12 @@ flutter:
     - assets/produkcija.jpg
     - assets/planProdukcije.jpg
     - assets/skladiste_i_transport.jpg
-
+    - assets/montaza.jpg
+    - assets/verifikacija.jpg
+    - assets/kolicina.jpg
+    - assets/defekti.jpg
+    - assets/zahtevi.jpg
+    - assets/status.jpg
 
 
   # To add assets to your application, add an assets section, like this:

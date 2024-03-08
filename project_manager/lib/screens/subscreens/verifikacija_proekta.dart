@@ -17,7 +17,7 @@ class VerifikacijaProjektaPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AppColors.primaryColor,
         title: Text(
-          'Plan produkcije',
+          'Verifikacija projekta',
           style: TextStyle(  
             fontWeight: FontWeight.bold,
           ),

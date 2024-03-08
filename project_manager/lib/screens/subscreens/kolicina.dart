@@ -16,7 +16,7 @@ class KolicinaPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AppColors.primaryColor,
         title: Text(
-          'Plan produkcije',
+          'Kolicina',
           style: TextStyle(  
             fontWeight: FontWeight.bold,
           ),

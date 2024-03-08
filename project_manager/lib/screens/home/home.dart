@@ -13,16 +13,18 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   final AuthService _auth = AuthService();
   final DatabaseService _databaseService = DatabaseService();
   TextEditingController _searchController = TextEditingController();
-  List<Project> _projects = []; // List to hold all projects
-  List<Project> _filteredProjects = []; // List to hold filtered projects
+  List<Project> _projects = [];
+  List<Project> _filteredProjects = [];
 
   @override
   void initState() {
     super.initState();
-    _fetchProjects(); // Fetch all projects when the widget initializes
+    _fetchProjects();
   }
 
   void _fetchProjects() async {
@@ -49,82 +51,42 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isDesktop = screenWidth > 600;
+
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: AppColors.secondaryColor,
       appBar: AppBar(
-        title: Text('Project Manager'),
+        toolbarHeight: isDesktop ? 100 : 60,
+        title: Text(
+          'Project Manager',
+          style: TextStyle(fontSize: isDesktop ? 50 : 24,
+                            fontWeight: FontWeight.w900,
+),
+        ),
         backgroundColor: AppColors.primaryColor,
-        actions: <Widget>[
-          FutureBuilder<String?>(
-            future: _auth.getCurrentUserID(), // Fetch current user ID
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator();
-              } else if (snapshot.hasData) {
-                String userId = snapshot.data!; // Retrieve user ID
-                return FutureBuilder<String?>(
-                  future: _databaseService.getUserRole(userId), // Fetch user role
-                  builder: (context, roleSnapshot) {
-                    if (roleSnapshot.connectionState == ConnectionState.waiting) {
-                      return CircularProgressIndicator();
-                    } else if (roleSnapshot.hasData) {
-                      String? userRole = roleSnapshot.data;
-                      if (userRole == 'admin' || userRole == 'moderator') {
-                        return ElevatedButton( // ElevatedButton for Administrator
-                          onPressed: () async {
-                            await Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => AdminPanel()), // Navigate to the AdminPanel screen
-                            );
-                            _fetchProjects(); // Fetch projects again after returning from admin panel
-                          },
-                          child: Row( // Row to contain icon and text
-                            children: [
-                              Icon(
-                                Icons.admin_panel_settings,
-                                color: Colors.black, // Set color of the icon to blue
-                                size: 32, // Set the size of the icon (adjust as needed)
-                              ), // Icon for Administrator
-                              SizedBox(width: 8), // Add some space between icon and text
-                              Text(
-                                'Administrator',
-                                style: TextStyle(color: Colors.black,fontSize: 20), // Set color of the text to blue
-                              ), // Text for Administrator
-                            ],
-                          ),
-                        );
-                      } else {
-                        return Text('User role: $userRole'); // Display user role if not admin
-                      }
-                    } else {
-                      return Text('Role data not available'); // Handle case when role data is not available
-                    }
-                  },
-                );
-              } else {
-                return Text('No ID available'); // Display message if user ID is not available
-              }
-            },
-          ),
-          SizedBox(width: 12),
-          ElevatedButton.icon(
-            icon: Icon(Icons.logout_rounded, color: Colors.black),
-            label: Text('Odjavi se', style: TextStyle(color: Colors.black, fontSize: 20),),
-            onPressed: () async {
-              await _auth.signOut();
+        actions: isDesktop ? _buildDesktopActions() : [
+          IconButton(
+            icon: Icon(Icons.menu),
+            onPressed: () {
+              _scaffoldKey.currentState!.openEndDrawer();
             },
           ),
         ],
       ),
+      endDrawer: !isDesktop ? _buildDrawer() : null,
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(isDesktop ? 16 : 8),
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
                 hintText: 'Search projects...',
+                hintStyle: TextStyle(fontSize: isDesktop ? 30 : 20),
               ),
+              style: TextStyle(fontSize: isDesktop ? 30 : 20),
               onChanged: _searchProjects,
             ),
           ),
@@ -134,8 +96,18 @@ class _HomeState extends State<Home> {
               itemBuilder: (context, index) {
                 Project project = _filteredProjects[index];
                 return ListTile(
-                  title: Text(project.naziv),
-                  subtitle: Text(project.adresa),
+                  title: Text(
+                    project.naziv,
+                    style: TextStyle(
+                      fontSize: isDesktop ? 32 : 18,
+                    ),
+                  ),
+                  subtitle: Text(
+                    project.adresa,
+                    style: TextStyle(
+                      fontSize: isDesktop ? 28 : 18,
+                    ),
+                  ),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -145,6 +117,164 @@ class _HomeState extends State<Home> {
                 );
               },
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  List<Widget> _buildDesktopActions() {
+    return [
+      FutureBuilder<String?>(
+        future: _auth.getCurrentUserID(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator();
+          } else if (snapshot.hasData) {
+            String userId = snapshot.data!;
+            return FutureBuilder<String?>(
+              future: _databaseService.getUserRole(userId),
+              builder: (context, roleSnapshot) {
+                if (roleSnapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator();
+                } else if (roleSnapshot.hasData) {
+                  String? userRole = roleSnapshot.data;
+                  if (userRole == 'admin' || userRole == 'moderator') {
+                    return ElevatedButton(
+                      onPressed: () async {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => AdminPanel()),
+                        );
+                        _fetchProjects();
+                      },
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.admin_panel_settings,
+                            color: Colors.black,
+                            size: 30,
+                          ),
+                          SizedBox(width: 8),
+                          Text(
+                            'Administrator',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 30,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  } else {
+                    return Text(
+                      'User role: $userRole',
+                      style: TextStyle(
+                        fontSize: 32,
+                      ),
+                    );
+                  }
+                } else {
+                  return Text(
+                    'Role data not available',
+                    style: TextStyle(
+                      fontSize: 32,
+                    ),
+                  );
+                }
+              },
+            );
+          } else {
+            return Text(
+              'No ID available',
+              style: TextStyle(
+                fontSize: 24,
+              ),
+            );
+          }
+        },
+      ),
+      SizedBox(width: 12),
+      ElevatedButton.icon(
+        icon: Icon(Icons.logout_rounded, color: Colors.black),
+        label: Text(
+          'Odjavi se',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 30,
+          ),
+        ),
+        onPressed: () async {
+          await _auth.signOut();
+        },
+      ),
+    ];
+  }
+
+  Widget _buildDrawer() {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          Container(
+            height: 70,
+            child: DrawerHeader(
+              decoration: BoxDecoration(
+                color: AppColors.primaryColor,
+              ),
+              child: Text(
+                'Menu',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 24,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+            ),
+          ),
+          FutureBuilder<String?>(
+            future: _auth.getCurrentUserID(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator();
+              } else if (snapshot.hasData) {
+                String userId = snapshot.data!;
+                return FutureBuilder<String?>(
+                  future: _databaseService.getUserRole(userId),
+                  builder: (context, roleSnapshot) {
+                    if (roleSnapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator();
+                    } else if (roleSnapshot.hasData) {
+                      String? userRole = roleSnapshot.data;
+                      if (userRole == 'admin' || userRole == 'moderator') {
+                        return ListTile(
+                          title: Text('Administrator'),
+                          onTap: () async {
+                            Navigator.pop(context);
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => AdminPanel()),
+                            );
+                            _fetchProjects();
+                          },
+                        );
+                      }
+                    }
+                    // Return an empty container if the user is not an administrator
+                    return Container();
+                  },
+                );
+              }
+              // Return an empty container if user ID is not available
+              return Container();
+            },
+          ),
+          ListTile(
+            title: Text('Log out'),
+            onTap: () async {
+              Navigator.pop(context);
+              await _auth.signOut();
+            },
           ),
         ],
       ),

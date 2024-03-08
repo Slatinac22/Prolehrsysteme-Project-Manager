@@ -16,7 +16,7 @@ class SkladisteITransportPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AppColors.primaryColor,
         title: Text(
-          'Plan produkcije',
+          'Skladiste i transport',
           style: TextStyle(  
             fontWeight: FontWeight.bold,
           ),
