@@ -139,21 +139,51 @@ Future<void> deleteProject(String projectId) async {
 
 
   
-  Future<void> addProject(Project project) async {
-    try {
-      await _firestore.collection('projects').add({
-        'id' : project.id,
-        'naziv': project.naziv,
-        'adresa': project.adresa,
-        'ponuda': project.ponuda,
-        'datum_dobijanja_ponude': project.datum_dobijanja_ponude,
-        'status_ponude' : project.status_ponude
-        // Add other fields if needed
-      });
-    } catch (e) {
-      print('Error adding project: $e');
-    }
+Future<void> addProject(Project project) async {
+  try {
+    await _firestore.collection('projects').add({
+      'id': project.id,
+      'naziv': project.naziv,
+      'adresa': project.adresa,
+      'ponuda': project.ponuda,
+      'datum_dobijanja_ponude': project.datum_dobijanja_ponude,
+      'status_ponude': project.status_ponude,
+      'plan_produkcije': project.plan_produkcije,
+      'nabavka_materijala': project.nabavka_materijala,
+      'produkcija': project.produkcija,
+      'skladiste': project.skladiste,
+      'planirani_datum_transporta': project.planirani_datum_transporta,
+      'nije_planiran_datum_transporta': project.nije_planiran_datum_transporta,
+      'poslato': project.poslato,
+      'dobijen_period_za_montazu': project.dobijen_period_za_montazu,
+      'planirani_pocetak_montaze': project.planiran_pocetak_montaze,
+      'pocetak_montaze': project.pocetak_montaze,
+      'planirani_zavrsetak_montaze': project.planiran_zavrsetak_montaze,
+      'zavrsetak_montaze': project.zavrsetak_montaze,
+      'datum_verifikacije': project.datum_verifikacije,
+      'kolicina': project.kolicina,
+      'defekti': project.defekti,
+      'datum_prijave_defekta': project.datum_prijave_defekta,
+      'status_transporta': project.status_transporta,
+      'status_ponude_defekti': project.status_ponude_defekti,
+      'zavrseno': project.zavrseno,
+      'dodatni_zahtevi': project.dodatni_zahtevi,
+      'datum_dodatnog_zahteva': project.datum_dodatnog_zahteva,
+      'status_ponude_zahtevi': project.status_ponude_zahtevi,
+      'status_odobrenja_zahtevi': project.status_odobrenja_zahtevi,
+      'broj_porudzbine': project.broj_porudzbine,
+      'status_zahteva': project.status_zahteva,
+      'planirani_pocetak_radova': project.planirani_pocetak_radova,
+      'nalazi_se': project.nalazi_se,
+      'poslato_u_ch': project.poslato_u_ch,
+      'status_zavrseno': project.status_zavrseno,
+      // Add other fields if needed
+    });
+  } catch (e) {
+    print('Error adding project: $e');
   }
+}
+
 
 
 }

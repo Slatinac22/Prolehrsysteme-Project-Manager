@@ -42,7 +42,7 @@ class PlanProdukcijePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: 20),
-                  _buildDataItem('Status plana produkcije:', project.status_ponude, context),
+                  _buildDataItem('Status plana produkcije:', project.plan_produkcije, context),
  
                 ],
               );

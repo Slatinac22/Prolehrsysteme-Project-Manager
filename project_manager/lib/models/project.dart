@@ -9,6 +9,7 @@ class Project {
   String ponuda;
   String datum_dobijanja_ponude;
   String status_ponude;
+  String plan_produkcije;
   String nabavka_materijala;
   String produkcija;
   String skladiste;
@@ -39,6 +40,7 @@ class Project {
   String status_zavrseno;
 
   String kolicina;
+
   String id;
 
   Project({
@@ -48,6 +50,7 @@ class Project {
     this.ponuda = ' ',
     this.datum_dobijanja_ponude = '',
     this.status_ponude = '',
+    this.plan_produkcije = '',
     this.nabavka_materijala = '',
     this.produkcija = '',
     this.skladiste = '',
@@ -101,6 +104,7 @@ class Project {
       ponuda: data['ponuda'] ?? '',
       datum_dobijanja_ponude: data['datum_dobijanja_ponude'] ?? '',
       status_ponude: data['status_ponude'] ?? '',
+      plan_produkcije: data['plan_produkcije'] ?? '',
       nabavka_materijala: data['nabavka_materijala'] ?? '',
       produkcija: data['produkcija'] ?? '',
       skladiste: data['skladiste'] ?? '',
