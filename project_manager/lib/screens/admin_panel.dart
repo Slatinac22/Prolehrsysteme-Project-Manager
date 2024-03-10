@@ -27,12 +27,19 @@ class _AdminPanelState extends State<AdminPanel> {
   @override
   void initState() {
     super.initState();
-    _projectsSubscription = _databaseService.streamProjects().listen((projects) {
-      setState(() {
-        _projects = projects;
-        _filteredProjects = projects; // Initially set filtered projects to all projects
-      });
+_projectsSubscription = _databaseService.streamProjects().listen(
+  (projects) {
+    setState(() {
+      _projects = projects;
+      _filteredProjects = projects; // Initially set filtered projects to all projects
     });
+  },
+  onError: (error) {
+    // Handle error
+    print('Error in stream: $error');
+  },
+);
+
   }
 
 void _filterProjects(String query) {
@@ -110,6 +117,7 @@ void _filterProjects(String query) {
                     ],
                   ),
                   subtitle: Text(project.adresa),
+                  
                   onTap: () {
                     Navigator.push(
                       context,

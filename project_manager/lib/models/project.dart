@@ -33,12 +33,10 @@ class Project {
   String status_odobrenja_zahtevi;
   String broj_porudzbine;
   String status_zahteva;
-
   String planirani_pocetak_radova;
   String nalazi_se;
   String poslato_u_ch;
   String status_zavrseno;
-
   String kolicina;
 
   String id;
@@ -151,4 +149,14 @@ class Project {
         .snapshots()
         .map((snapshot) => Project.fromSnapshot(snapshot));
   }
+
+
+
+
+
+
+
+
+
+  
 }
