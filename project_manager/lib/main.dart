@@ -28,13 +28,27 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return StreamProvider<HandmadeUser?>.value(
       value: AuthService().user, // Accepts nullable HandmadeUser
       initialData: null, // You can provide initial data here if needed
       child: MaterialApp(
         debugShowCheckedModeBanner: false, // Set debugShowCheckedModeBanner to false
+         theme: ThemeData(
+          // Define the primary color for the theme
+          primaryColor: Colors.blue, // Change this to the desired primary color
+          // Define the focus color for form fields
+          focusColor: Colors.blue, // Change this to the desired focus color
+          // Define the appearance of text form fields
+          inputDecorationTheme: InputDecorationTheme(
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.blue), // Change this to the desired focus border color
+            ),
+          ),
+        ),
         home: Wrapper(),
       ),
     );
+    
   }
 }
