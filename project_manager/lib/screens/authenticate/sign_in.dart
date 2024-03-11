@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:project_manager/services/auth.dart';
 import 'package:project_manager/shared/constants.dart';
@@ -20,6 +22,9 @@ class _SignInState extends State<SignIn> {
   String email = '';
   String password = '';
   String error = '';
+
+  // Timer for debouncing
+  Timer? _debounce;
 
   @override
   Widget build(BuildContext context) {
@@ -53,39 +58,54 @@ class _SignInState extends State<SignIn> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text('Dobrodošli',
-                          style: TextStyle(fontWeight: FontWeight.bold,fontSize: 50),),
+                          Text(
+                            'Dobrodošli',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 50,
+                              color: Colors.white,
+                            ),
+                          ),
+                          SizedBox(height: 30.0),
                           TextFormField(
-                            decoration: textInputDecoration.copyWith(hintText: 'E-Mail'),
+                            decoration: InputDecoration(
+                              hintText: 'E-Mail',
+                              prefixIcon: Icon(Icons.email), // Add email icon
+                            ),
                             validator: (val) => val!.isEmpty ? 'Unesi E-Mail' : null,
                             onChanged: (val) {
                               // Handle email input
-                              setState(() {
-                                email = val;
+                              if (_debounce?.isActive ?? false) _debounce?.cancel();
+                              _debounce = Timer(Duration(milliseconds: 500), () {
+                                setState(() {
+                                  email = val;
+                                });
                               });
                             },
                           ),
                           SizedBox(height: 20.0),
                           TextFormField(
-                            decoration: textInputDecoration.copyWith(hintText: 'Lozinka'),
-                            validator: (val) => val!.length < 6 ? 'Unesi lozinku koja ima 6+ karaktera' : null,
+                            decoration: InputDecoration(
+                              hintText: 'Lozinka',
+                              prefixIcon: Icon(Icons.lock), // Add lock icon
+                            ),
+                            validator: (val) =>
+                                val!.length < 6 ? 'Unesi lozinku koja ima 6+ karaktera' : null,
                             obscureText: true,
                             onChanged: (val) {
                               // Handle password input
-                              setState(() {
-                                password = val;
+                              if (_debounce?.isActive ?? false) _debounce?.cancel();
+                              _debounce = Timer(Duration(milliseconds: 500), () {
+                                setState(() {
+                                  password = val;
+                                });
                               });
                             },
                           ),
                           SizedBox(height: 30.0),
                           Center(
                             child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                padding: EdgeInsets.symmetric(horizontal: 40, vertical: 16),
-                                elevation: 5,
-                              ),
                               onPressed: () async {
-                                // Handle sign-in button press
                                 if (_formKey.currentState?.validate() ?? false) {
                                   setState(() => loading = true);
                                   dynamic result = await _auth.signInWithEmailPassword(email, password);
@@ -98,11 +118,30 @@ class _SignInState extends State<SignIn> {
                                   }
                                 }
                               },
-                              child: Text(
-                        
-                                'Uloguj se',
-                                style: TextStyle(color:Colors.black,fontSize: 18, fontWeight: FontWeight.bold),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.blue,
+                                padding: EdgeInsets.symmetric(horizontal: 40, vertical: 16),
+                                elevation: 5,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30.0),
+                                ),
                               ),
+                              child: loading
+                                  ? SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: CircularProgressIndicator(
+                                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                      ),
+                                    )
+                                  : Text(
+                                      'Uloguj se',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                             ),
                           ),
                           SizedBox(height: 12.0),
@@ -118,5 +157,11 @@ class _SignInState extends State<SignIn> {
               ],
             ),
           );
+  }
+
+  @override
+  void dispose() {
+    _debounce?.cancel();
+    super.dispose();
   }
 }

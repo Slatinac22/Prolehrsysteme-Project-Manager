@@ -26,6 +26,8 @@ class ProjectDetailPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AppColors.primaryColor,
         title: Text('${project.naziv} ${project.adresa}'),
+
+        
       ),
       body: Center(
         child: StreamBuilder(
@@ -108,8 +110,8 @@ Widget buildButton(BuildContext context, String text, Widget destination, Color 
             );
           },
           style: ElevatedButton.styleFrom(
-            primary: Colors.transparent, // Make the button background transparent
-            onPrimary: color, // Text color
+            backgroundColor: Colors.transparent, // Make the button background transparent
+      // Text color
             shape: RoundedRectangleBorder(
           // Button border radius
             ),

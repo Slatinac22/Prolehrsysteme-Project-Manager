@@ -1,23 +1,22 @@
-
 import 'package:flutter/material.dart';
 import 'package:project_manager/models/project.dart';
 import 'package:project_manager/services/database.dart';
-import 'package:project_manager/shared/colors.dart'; 
-
+import 'package:project_manager/shared/colors.dart';
 
 class SkladisteITransportPage extends StatelessWidget {
-    final String projectId;
+  final String projectId;
+
   const SkladisteITransportPage({required this.projectId});
 
-@override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.secondaryColor,
       appBar: AppBar(
         backgroundColor: AppColors.primaryColor,
         title: Text(
-          'Skladiste i transport',
-          style: TextStyle(  
+          'Skladište i Transport',
+          style: TextStyle(
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -35,20 +34,17 @@ class SkladisteITransportPage extends StatelessWidget {
               return Center(child: Text('No project data available'));
             } else {
               Project project = snapshot.data!;
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              return ListView(
                 children: [
+                  _buildDataItem('Skladište', project.skladiste, context),
                   SizedBox(height: 20),
-                  _buildDataItem('Skladiste', project.skladiste, context),
+                  _buildDataItem('Planirani Datum Transporta', project.planirani_datum_transporta, context),
                   SizedBox(height: 20),
-                  _buildDataItem('Planirani datum transporta', project.planirani_datum_transporta, context),
-                  SizedBox(height: 20),
-                  _buildDataItem('Nije planiran datum transporta uz obrazlozenje', project.nije_planiran_datum_transporta, context),
+                  _buildDataItem('Nije Planiran Datum Transporta uz Obrazloženje', project.nije_planiran_datum_transporta, context),
                   SizedBox(height: 20),
                   _buildDataItem('Poslato - Datum:', project.poslato, context),
-   
+                  SizedBox(height: 20),
                 ],
-                
               );
             }
           },
@@ -60,23 +56,42 @@ class SkladisteITransportPage extends StatelessWidget {
   Widget _buildDataItem(String title, String data, BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: screenWidth > 600 ? 30 : 16, // Adjust font size based on screen width
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
+    return Container(
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.3),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: Offset(0, 3),
           ),
-        ),
-        SizedBox(height: 5),
-        Text(
-          data,
-          style: TextStyle(fontSize: screenWidth > 600 ? 30 : 14), // Adjust font size based on screen width
-        ),
-      ],
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: screenWidth > 600 ? 24 : 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+          SizedBox(height: 8),
+          Text(
+            data,
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.black87,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
+

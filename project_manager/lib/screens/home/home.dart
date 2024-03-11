@@ -81,14 +81,24 @@ class _HomeState extends State<Home> {
           Padding(
             padding: EdgeInsets.all(isDesktop ? 16 : 8),
             child: TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                hintText: 'Search projects...',
-                hintStyle: TextStyle(fontSize: isDesktop ? 30 : 20),
-              ),
-              style: TextStyle(fontSize: isDesktop ? 30 : 20),
-              onChanged: _searchProjects,
-            ),
+  controller: _searchController,
+  decoration: InputDecoration(
+    hintText: 'Search projects...',
+    hintStyle: TextStyle(fontSize: isDesktop ? 30 : 20),
+    prefixIcon: Icon(Icons.search), // Add a search icon
+    border: OutlineInputBorder( // Add border radius and styling
+      borderRadius: BorderRadius.circular(10.0),
+      borderSide: BorderSide(
+        color: Colors.grey, // Adjust border color if needed
+        width: 1.0,
+      ),
+    ),
+    contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0), // Adjust padding
+  ),
+  style: TextStyle(fontSize: isDesktop ? 30 : 20),
+  onChanged: _searchProjects,
+),
+
           ),
           Expanded(
             child: ListView.builder(

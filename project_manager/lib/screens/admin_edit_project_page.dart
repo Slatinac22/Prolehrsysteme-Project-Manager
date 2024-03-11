@@ -1,7 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:project_manager/models/project.dart';
 import 'package:project_manager/screens/project_edit_page.dart';
+import 'package:project_manager/screens/subscreens/defekti.dart';
+import 'package:project_manager/screens/subscreens/kolicina.dart';
+import 'package:project_manager/screens/subscreens/montaza.dart';
+import 'package:project_manager/screens/subscreens/nabavka_i_produkcija.dart';
+import 'package:project_manager/screens/subscreens/plan_produkcije.dart';
+import 'package:project_manager/screens/subscreens/skladiste_i_transport.dart';
+import 'package:project_manager/screens/subscreens/status.dart';
+import 'package:project_manager/screens/subscreens/verifikacija_proekta.dart';
+import 'package:project_manager/screens/subscreens/zahtevi.dart';
 import 'package:project_manager/services/database.dart';
+import 'package:project_manager/shared/colors.dart'; 
+import 'package:project_manager/screens/subscreens/ponude.dart';
 
 class AdminProjectDetailPage extends StatelessWidget {
   final Project project;
@@ -10,13 +21,12 @@ class AdminProjectDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Size screenSize = MediaQuery.of(context).size;
-    double textSize = screenSize.width < 600 ? 20.0 : 36.0;
-
     return Scaffold(
+      backgroundColor: AppColors.secondaryColor,
       appBar: AppBar(
-        title: Text(project.naziv),
-        actions: [
+        backgroundColor: AppColors.primaryColor,
+        title: Text('${project.naziv} ${project.adresa}'),
+                actions: [
           IconButton(
             onPressed: () {
               _editProject(context);
@@ -24,150 +34,127 @@ class AdminProjectDetailPage extends StatelessWidget {
             icon: Icon(Icons.edit, size: 30),
           ),
         ],
+        
       ),
-      body: StreamBuilder(
-        stream: DatabaseService().streamProject(project.id),
-        builder: (context, AsyncSnapshot<Project> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError || !snapshot.hasData) {
-            return Center(child: Text('Error loading project data'));
-          } else {
-            Project updatedProject = snapshot.data!;
-            return _buildGroupedCards(context, updatedProject);
-          }
-        },
+      body: Center(
+        child: StreamBuilder(
+          stream: DatabaseService().streamProject(project.id),
+          builder: (context, AsyncSnapshot<Project> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator();
+            } else if (snapshot.hasError || !snapshot.hasData) {
+              return Text('Error loading project data');
+            } else {
+              Project updatedProject = snapshot.data!;
+              return GridView.count(
+                crossAxisCount: 2,
+                padding: EdgeInsets.all(16.0),
+                mainAxisSpacing: 20.0,
+                crossAxisSpacing: 20.0,
+                childAspectRatio: 3,
+                children: [
+                  buildButton(context, 'Ponude', PonudePage(projectId: updatedProject.id), Colors.blue, 'handshake.jpg'),
+                  buildButton(context, 'Plan Produkcije', PlanProdukcijePage(projectId: updatedProject.id), Colors.green, 'planProdukcije.jpg'),
+                  buildButton(context, 'Nabavka i Produkcija', NabavkaIProdukcijaPage(projectId: updatedProject.id), Colors.orange, 'produkcija.jpg'),
+                  buildButton(context, 'Skladiste i Transport', SkladisteITransportPage(projectId: updatedProject.id), Colors.purple, 'skladiste_i_transport.jpg'),
+                  buildButton(context, 'Montaza', MontazaPage(projectId: updatedProject.id), Colors.red, 'montaza.jpg'),
+                  buildButton(context, 'Verifikacija Projekta', VerifikacijaProjektaPage(projectId: updatedProject.id), Colors.teal, 'verifikacija.jpg'),
+                  buildButton(context, 'Kolicina', KolicinaPage(projectId: updatedProject.id), Colors.indigo, 'kolicina.jpg'),
+                  buildButton(context, 'Defekti', DefektiPage(projectId: updatedProject.id), Colors.white30, 'defekti.jpg'),
+                  buildButton(context, 'Zahtevi', ZahteviPage(projectId: updatedProject.id), Colors.amberAccent, 'zahtevi.jpg'),
+                  buildButton(context, 'Status', StatusPage(projectId: updatedProject.id), Colors.brown, 'status.jpg'),
+                ],
+              );
+            }
+          },
+        ),
       ),
     );
   }
+
+
+
+Widget buildButton(BuildContext context, String text, Widget destination, Color color, String imageName) {
+  return Stack(
+    alignment: Alignment.center,
+    children: [
+      Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10), // Border radius to cut the edges
+        ),
+        width: double.infinity,
+        height: double.infinity,
+        
+        child: Image.asset(
+          'assets/$imageName',
+          fit: BoxFit.cover,
+        ),
+      ),
+      Positioned.fill(
+        top: text == 'Ponude' ? -10 : 0, // Adjust the top position based on the button text
+        child: Container(
+          color: text == 'Ponude' ?
+           Colors.blue.withOpacity(0.5) : text == 'Nabavka i Produkcija' ?
+           Colors.orange.withOpacity(0.5) : text == 'Plan Produkcije' ?
+           Colors.green.withOpacity(0.5) : text == 'Skladiste i Transport' ?
+           Colors.purple.withOpacity(0.5) : text == 'Montaza' ?
+           Colors.red.withOpacity(0.5) : text == 'Verifikacija Projeta' ? 
+           Colors.teal.withOpacity(0.5) : text == 'Kolicina' ?
+           Colors.indigo.withOpacity(0.5) : text == 'Defekti' ?
+           Colors.white30.withOpacity(0.5) : text == 'Zahtevi' ? 
+           Colors.amberAccent.withOpacity(0.5) : 
+           Colors.brown.withOpacity(0.5)
+          ),
+      ),
+      SizedBox(
+        width: double.infinity,
+        height: double.infinity,
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => destination),
+            );
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.transparent, // Make the button background transparent
+      // Text color
+            shape: RoundedRectangleBorder(
+          // Button border radius
+            ),
+          ),
+          child: Center(
+            child: Text(
+              text,
+              style: TextStyle(
+                fontSize: MediaQuery.of(context).size.width * 0.045,
+                fontFamily: 'Pacifico', // Example of using a custom font
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                decorationThickness: 2,
+                decorationStyle: TextDecorationStyle.double, // Use double line style
+                shadows: [
+                  Shadow(
+                    blurRadius: 4,
+                    color: Colors.black.withOpacity(0.5),
+                    offset: Offset(2, 2),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    ],
+  );
+}
+
+
 
   void _editProject(BuildContext context) {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => ProjectEditPage(project: project)),
     );
-  }
-
-  Widget _buildGroupedCards(BuildContext context, Project updatedProject) {
-    return GridView.count(
-      crossAxisCount: MediaQuery.of(context).size.width > 600 ? 4 : 1,
-      childAspectRatio: MediaQuery.of(context).size.width > 600 ? 3 : 3,
-      children: _buildCards(context, updatedProject),
-    );
-  }
-
-  List<Widget> _buildCards(BuildContext context, Project updatedProject) {
-    List<Widget> cards = [];
-    List<List<String>> cardGroups = [
-      ['Naziv projekta', 'Adresa projekta'],
-      ['Ponuda', 'Datum dobijanja ponude', 'Status ponude'],
-      ['Plan produkcije'],
-      ['Nabavka materijala', 'Produkcija'],
-      ['Skladiste', 'Planirani datum transporta', 'Nije planiran datum transporta uz obrazlozenje', 'Poslato'],
-      ['Dobijen period za montazu', 'Planirani pocetak montaze', 'Pocetak montaze', 'Planirani zavrsetak montaze', 'Zavrsetak montaze'],
-      ['Datum verifikacije'],
-      ['Defekti', 'Datum prijave defekta', 'Status transporta', 'Status ponude (Defekti)', 'Zavrseno'],
-      ['Dodatni zahtevi', 'Datum dodatnog zahteva', 'Status ponude (Zahtevi)', 'Status odobrenja', 'Broj porudzbine', 'Status zahteva'],
-      ['Planirani pocetak radova', 'Nalazi se', 'Poslato u CH', 'Finalni status'],
-      ['Kolicina'],
-    ];
-
-    for (var group in cardGroups) {
-      for (var label in group) {
-        cards.add(_buildDetailCard(label, _detailValues(updatedProject)[_detailLabels.indexOf(label)]));
-      }
-    }
-
-    return cards;
-  }
-
-  Widget _buildDetailCard(String label, String value) {
-    return Card(
-      elevation: 2.0,
-      child: ListTile(
-        title: Text(
-          label,
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        subtitle: Text(value),
-        contentPadding: EdgeInsets.all(16.0),
-      ),
-    );
-  }
-
-  List<String> _detailLabels = [
-    'Naziv projekta',
-    'Adresa projekta',
-    'Ponuda',
-    'Datum dobijanja ponude',
-    'Status ponude',
-    'Plan produkcije',
-    'Nabavka materijala',
-    'Produkcija',
-    'Skladiste',
-    'Planirani datum transporta',
-    'Nije planiran datum transporta uz obrazlozenje',
-    'Poslato',
-    'Dobijen period za montazu',
-    'Planirani pocetak montaze',
-    'Pocetak montaze',
-    'Planirani zavrsetak montaze',
-    'Zavrsetak montaze',
-    'Datum verifikacije',
-    'Defekti',
-    'Datum prijave defekta',
-    'Status transporta',
-    'Status ponude (Defekti)',
-    'Zavrseno',
-    'Dodatni zahtevi',
-    'Datum dodatnog zahteva',
-    'Status ponude (Zahtevi)',
-    'Status odobrenja',
-    'Broj porudzbine',
-    'Status zahteva',
-    'Planirani pocetak radova',
-    'Nalazi se',
-    'Poslato u CH',
-    'Finalni status',
-    'Kolicina',
-  ];
-
-  List<String> _detailValues(Project project) {
-    return [
-      project.naziv,
-      project.adresa,
-      project.ponuda,
-      project.datum_dobijanja_ponude,
-      project.status_ponude,
-      project.plan_produkcije,
-      project.nabavka_materijala,
-      project.produkcija,
-      project.skladiste,
-      project.planirani_datum_transporta,
-      project.nije_planiran_datum_transporta,
-      project.poslato,
-      project.dobijen_period_za_montazu,
-      project.planiran_pocetak_montaze,
-      project.pocetak_montaze,
-      project.planiran_zavrsetak_montaze,
-      project.zavrsetak_montaze,
-      project.datum_verifikacije,
-      project.defekti,
-      project.datum_prijave_defekta,
-      project.status_transporta,
-      project.status_ponude_defekti,
-      project.zavrseno,
-      project.dodatni_zahtevi,
-      project.datum_dodatnog_zahteva,
-      project.status_ponude_zahtevi,
-      project.status_odobrenja_zahtevi,
-      project.broj_porudzbine,
-      project.status_zahteva,
-      project.planirani_pocetak_radova,
-      project.nalazi_se,
-      project.poslato_u_ch,
-      project.status_zavrseno,
-      project.kolicina,
-    ];
   }
 }
