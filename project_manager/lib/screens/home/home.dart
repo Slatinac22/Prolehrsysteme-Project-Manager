@@ -56,80 +56,109 @@ class _HomeState extends State<Home> {
 
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: AppColors.secondaryColor,
-      appBar: AppBar(
-        toolbarHeight: isDesktop ? 100 : 60,
-        title: Text(
-          'Project Manager',
-          style: TextStyle(fontSize: isDesktop ? 50 : 24,
-                            fontWeight: FontWeight.w900,
-),
-        ),
-        backgroundColor: AppColors.primaryColor,
-        actions: isDesktop ? _buildDesktopActions() : [
-          IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () {
-              _scaffoldKey.currentState!.openEndDrawer();
-            },
-          ),
-        ],
-      ),
-      endDrawer: !isDesktop ? _buildDrawer() : null,
+      backgroundColor: Colors.white,
       body: Column(
         children: [
+          Material(
+            elevation: 10, // Add elevation here
+            child: AppBar(
+              toolbarHeight: isDesktop ? 100 : 80,
+              title: Center(
+                child: Text(
+                  'Project Manager',
+                  style: TextStyle(
+                    fontSize: isDesktop ? 50 : 40,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+              ),
+              backgroundColor: AppColors.secondaryColor,
+              actions: isDesktop ? _buildDesktopActions() : [
+                IconButton(
+                  icon: Icon(Icons.menu,size:40),
+                  onPressed: () {
+                    _scaffoldKey.currentState!.openEndDrawer();
+                  },
+                ),
+              ],
+            ),
+          ),
           Padding(
-            padding: EdgeInsets.all(isDesktop ? 16 : 8),
+          padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0), // Add space only above the search bar
+          child: Container(
+            margin: EdgeInsets.symmetric(vertical: 10.0), // Adjust vertical margin as needed
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
-                hintText: 'Search projects...',
+                hintText: 'Pretraga projekta...',
                 hintStyle: TextStyle(fontSize: isDesktop ? 30 : 20),
                 prefixIcon: Icon(Icons.search), // Add a search icon
-                border: OutlineInputBorder( // Add border radius and styling
+        
+                border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
                   borderSide: BorderSide(
-                    color: Colors.grey, // Adjust border color if needed
+                    color: Colors.grey,
                     width: 1.0,
                   ),
                 ),
-                contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0), // Adjust padding
+                contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
               ),
               style: TextStyle(fontSize: isDesktop ? 30 : 20),
               onChanged: _searchProjects,
             ),
-
           ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: _filteredProjects.length,
-              itemBuilder: (context, index) {
-                Project project = _filteredProjects[index];
-                return ListTile(
-                  title: Text(
-                    project.naziv,
-                    style: TextStyle(
-                      fontSize: isDesktop ? 32 : 18,
-                    ),
-                  ),
-                  subtitle: Text(
-                    project.adresa,
-                    style: TextStyle(
-                      fontSize: isDesktop ? 28 : 18,
-                    ),
-                  ),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ProjectDetailPage(project: project)),
-                    );
-                  },
-                );
-              },
+        ),
+
+Expanded(
+  child: ListView.builder(
+    itemCount: _filteredProjects.length,
+    itemBuilder: (context, index) {
+      Project project = _filteredProjects[index];
+      return Container(
+        margin: EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: Offset(0, 3), // changes position of shadow
+            ),
+          ],
+        ),
+        child: ListTile(
+          title: Text(
+            project.naziv,
+            style: TextStyle(
+              fontSize: isDesktop ? 32 : 30,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'Roboto',
             ),
           ),
+          subtitle: Text(
+            project.adresa,
+            style: TextStyle(
+              fontSize: isDesktop ? 28 : 22,
+               fontFamily: 'Oswald',
+            ),
+          ),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ProjectDetailPage(project: project)),
+            );
+          },
+        ),
+      );
+    },
+  ),
+),
+
         ],
       ),
+      endDrawer: !isDesktop ? _buildDrawer() : null,
     );
   }
 
@@ -230,14 +259,16 @@ class _HomeState extends State<Home> {
             height: 70,
             child: DrawerHeader(
               decoration: BoxDecoration(
-                color: AppColors.primaryColor,
+                color: AppColors.secondaryColor,
               ),
-              child: Text(
-                'Menu',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 24,
-                  fontWeight: FontWeight.w900,
+              child: Center(
+                child: Text(
+                  'Menu',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w900,
+                  ),
                 ),
               ),
             ),
@@ -258,7 +289,20 @@ class _HomeState extends State<Home> {
                       String? userRole = roleSnapshot.data;
                       if (userRole == 'admin' || userRole == 'moderator') {
                         return ListTile(
-                          title: Text('Administrator'),
+                          tileColor: Colors.white, // Set the background color of the ListTile
+                          title: Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center, // Align the content to the center
+                              children: [
+                                Text(
+                                  'Administrator',
+                                  style: TextStyle(fontSize: 20), // Adjust the font size of the text
+                                ),
+                                SizedBox(width: 10), // Add spacing between text and icon
+                                Icon(Icons.admin_panel_settings), // Add an icon after the text
+                              ],
+                            ),
+                          ),
                           onTap: () async {
                             Navigator.pop(context);
                             await Navigator.push(
@@ -268,6 +312,8 @@ class _HomeState extends State<Home> {
                             _fetchProjects();
                           },
                         );
+
+
                       }
                     }
                     // Return an empty container if the user is not an administrator
@@ -280,7 +326,19 @@ class _HomeState extends State<Home> {
             },
           ),
           ListTile(
-            title: Text('Log out'),
+            tileColor: Colors.white, // Set the background color of the ListTile
+            shape: Border(bottom: BorderSide(color: Colors.grey),top:BorderSide(color: Colors.grey)), // Add a bottom border
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Log out',
+                  style: TextStyle(fontSize: 20), // Adjust the font size of the text
+                ),
+                SizedBox(width: 10), // Add spacing between text and icon
+                Icon(Icons.logout), // Add an icon after the text
+              ],
+            ),
             onTap: () async {
               Navigator.pop(context);
               await _auth.signOut();

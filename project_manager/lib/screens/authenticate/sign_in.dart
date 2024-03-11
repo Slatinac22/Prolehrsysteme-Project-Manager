@@ -27,7 +27,7 @@ class _SignInState extends State<SignIn> {
   String error = '';
 
   // Timer for debouncing
-  Timer? _debounce;
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -170,33 +170,27 @@ class _SignInState extends State<SignIn> {
               ),
               SizedBox(height: 10.0),
               TextFormField(
-                
+                              
                 decoration: InputDecoration(
-                  
                   hintText: 'E-Mail',
                   hintStyle: TextStyle(color: Colors.black),
-                  prefixIcon: Icon(Icons.email,color:Colors.black),
+                  prefixIcon: Icon(Icons.email, color:Colors.black),
                   filled: true,
-                  fillColor: Color.fromARGB(120, 255, 255, 255),
-                  
+                  fillColor: Color.fromARGB(170, 255, 255, 255),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide(
-                    color: Colors.white, // Border color when focused
+                      color: Colors.white, // Border color when focused
+                    ),
                   ),
-                  ),
-
-                  
                 ),
                 validator: (val) => val!.isEmpty ? 'Unesi E-Mail' : null,
                 onChanged: (val) {
-                  if (_debounce?.isActive ?? false) _debounce?.cancel();
-                  _debounce = Timer(Duration(milliseconds: 500), () {
-                    setState(() {
-                      email = val;
-                    });
+                  setState(() {
+                    email = val; // Update email variable here
                   });
                 },
+
               ),
               SizedBox(height: 20.0),
               Text(
@@ -222,32 +216,31 @@ class _SignInState extends State<SignIn> {
               ),
               SizedBox(height: 10.0),
               TextFormField(
-              decoration: InputDecoration(
-                hintText: 'Lozinka',
-                hintStyle: TextStyle(color: Colors.black), // Centered placeholder text
-                prefixIcon: Icon(Icons.lock, color: Colors.black), // Centered icon
-                filled: true,
-                fillColor: Color.fromARGB(120, 255, 255, 255),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(
-                    color: Colors.white, // White border color
-                    width: 2.0, // Increased border width
-                  ),
-                ),
-              ),
-              style: TextStyle(color: Colors.black,), // Text color
-              validator: (val) =>
-                  val!.length < 6 ? 'Unesi lozinku koja ima 6+ karaktera' : null,
-              obscureText: true,
-              onChanged: (val) {
-                if (_debounce?.isActive ?? false) _debounce?.cancel();
-                _debounce = Timer(Duration(milliseconds: 500), () {
-                  setState(() {
-                    password = val;
-                    });
-                  });
-                },
+  decoration: InputDecoration(
+    hintText: 'Lozinka',
+    hintStyle: TextStyle(color: Colors.black),
+    prefixIcon: Icon(Icons.lock, color: Colors.black),
+    filled: true,
+    fillColor: Color.fromARGB(170, 255, 255, 255),
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10.0),
+      borderSide: BorderSide(
+        color: Colors.white, // White border color
+        width: 2.0, // Increased border width
+      ),
+    ),
+  ),
+  style: TextStyle(color: Colors.black),
+  validator: (val) =>
+      val!.length < 6 ? 'Unesi lozinku koja ima 6+ karaktera' : null,
+  obscureText: true,
+  onChanged: (val) {
+    setState(() {
+      password = val; // Update password variable here
+    });
+  },
+       
+
               ),
               SizedBox(height: 30.0),
               ElevatedButton(
@@ -305,7 +298,7 @@ class _SignInState extends State<SignIn> {
 
   @override
   void dispose() {
-    _debounce?.cancel();
+ 
     super.dispose();
   }
 }
