@@ -9,6 +9,7 @@ import 'package:project_manager/services/auth.dart';
 import 'package:project_manager/services/database.dart';
 import 'package:project_manager/shared/colors.dart';
 import 'dart:async';
+import 'package:project_manager/screens/admin_edit_project_page.dart';
 
 class AdminPanel extends StatefulWidget {
   @override
@@ -57,127 +58,121 @@ class _AdminPanelState extends State<AdminPanel> {
 
   @override
   Widget build(BuildContext context) {
-
-
-   return Scaffold(
-  backgroundColor: Colors.white,
-
-
-  body: Column(
-    children: [
-      Material(
-        elevation: 10,
-        child: AppBar(
-          toolbarHeight: 60,
-          backgroundColor: AppColors.secondaryColor,
-          centerTitle: true,
-          title: Padding(
-            padding: EdgeInsets.only(right: 50), // Add left padding
-            child: Center(
-              child: Text(
-                'Project Manager',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w900,
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Column(
+        children: [
+          Material(
+            elevation: 10,
+            child: AppBar(
+              toolbarHeight: 60,
+              backgroundColor: AppColors.secondaryColor,
+              centerTitle: true,
+              title: Padding(
+                padding: EdgeInsets.only(right: 50), // Add left padding
+                child: Center(
+                  child: Text(
+                    'Admin',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          margin: EdgeInsets.symmetric(vertical: 10.0),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10.0),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 2,
-                blurRadius: 5,
-                offset: Offset(0, 3),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              margin: EdgeInsets.symmetric(vertical: 10.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: Offset(0, 3),
+                  ),
+                ],
               ),
-            ],
-          ),
-
-
-
-
-
-
-
-
-          child: TextField(
-            controller: _searchController,
-            decoration: InputDecoration(
-              hintText: 'Search projects...',
-              hintStyle: TextStyle(fontSize: 16.0),
-              prefixIcon: Icon(Icons.search),
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+              child: TextField(
+                controller: _searchController,
+                decoration: InputDecoration(
+                  hintText: 'Search projects...',
+                  hintStyle: TextStyle(fontSize: 16.0),
+                  prefixIcon: Icon(Icons.search),
+                  border: InputBorder.none,
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                ),
+                onChanged: _filterProjects,
+              ),
             ),
-            onChanged: _filterProjects,
           ),
-        ),
-      ),
-      Expanded(
-        child: ListView.builder(
-          itemCount: _filteredProjects.length,
-          itemBuilder: (context, index) {
-            Project project = _filteredProjects[index];
-            return Card(
-              margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
-              elevation: 5.0,
-              child: ListTile(
-                title: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        project.naziv,
-                        style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-                      ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: _filteredProjects.length,
+              itemBuilder: (context, index) {
+                Project project = _filteredProjects[index];
+                return Card(
+                  margin:
+                      EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+                  elevation: 5.0,
+                  child: ListTile(
+                    title: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            project.naziv,
+                            style: TextStyle(
+                                fontSize: 18.0, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () {
+                            _showDeleteConfirmationDialog(context, project.id);
+                          },
+                        ),
+                      ],
                     ),
-                    IconButton(
-                      icon: Icon(Icons.delete),
-                      onPressed: () {
-                        _showDeleteConfirmationDialog(context, project.id);
-                      },
+                    subtitle: Text(
+                      project.adresa,
+                      style: TextStyle(fontSize: 16.0),
                     ),
-                  ],
-                ),
-                subtitle: Text(
-                  project.adresa,
-                  style: TextStyle(fontSize: 16.0),
-                ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ProjectEditPage(project: project)),
-                  );
-                },
-              ),
-            );
-          },
-        ),
-      ),
-    ],
-  ),
-  floatingActionButton: FloatingActionButton(
-    onPressed: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => AddProjectPage()),
-      );
-    },
-    child: Icon(Icons.add),
-  ),
-);
+                   onTap: () {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => AdminProjectDetailPage(project: project),
+    ),
+  );
+},
 
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddProjectPage()),
+          );
+        },
+        child: Icon(Icons.add),
+      ),
+    );
   }
 
-  Future<void> _showDeleteConfirmationDialog(BuildContext context, String projectId) async {
+  Future<void> _showDeleteConfirmationDialog(
+      BuildContext context, String projectId) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false,

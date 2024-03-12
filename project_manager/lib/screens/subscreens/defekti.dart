@@ -3,24 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:project_manager/models/project.dart';
 import 'package:project_manager/services/database.dart';
 import 'package:project_manager/shared/colors.dart'; 
+import 'package:project_manager/shared/appBar.dart';
 
 class DefektiPage extends StatelessWidget {
   final String projectId;
+  
   const DefektiPage({required this.projectId});
 
-@override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.secondaryColor,
-      appBar: AppBar(
-        backgroundColor: AppColors.primaryColor,
-        title: Text(
-          'Defekti',
-          style: TextStyle(  
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
+      backgroundColor: Colors.white,
+      appBar: buildCustomAppBar('Defekti'), // Correct usage of buildCustomAppBar
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: StreamBuilder<Project>(
@@ -39,9 +33,9 @@ class DefektiPage extends StatelessWidget {
                 children: [
                   SizedBox(height: 20),
                   _buildDataItem('Defekti', project.defekti, context),
-                   SizedBox(height: 20),
+                  SizedBox(height: 20),
                   _buildDataItem('Datum prijave defekta', project.datum_prijave_defekta, context),
-                   SizedBox(height: 20),
+                  SizedBox(height: 20),
                   _buildDataItem('Status transporta', project.status_transporta, context),
                   SizedBox(height: 20),
                   _buildDataItem('Status ponude', project.status_ponude_defekti, context),

@@ -73,89 +73,95 @@ class _HomeState extends State<Home> {
                 ),
               ),
               backgroundColor: AppColors.secondaryColor,
-              actions: isDesktop ? _buildDesktopActions() : [
-                IconButton(
-                  icon: Icon(Icons.menu,size:40),
-                  onPressed: () {
-                    _scaffoldKey.currentState!.openEndDrawer();
-                  },
-                ),
-              ],
+              actions: isDesktop
+                  ? _buildDesktopActions()
+                  : [
+                      IconButton(
+                        icon: Icon(Icons.menu, size: 40),
+                        onPressed: () {
+                          _scaffoldKey.currentState!.openEndDrawer();
+                        },
+                      ),
+                    ],
             ),
           ),
           Padding(
-          padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0), // Add space only above the search bar
-          child: Container(
-            margin: EdgeInsets.symmetric(vertical: 10.0), // Adjust vertical margin as needed
-            child: TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                hintText: 'Pretraga projekta...',
-                hintStyle: TextStyle(fontSize: isDesktop ? 30 : 20),
-                prefixIcon: Icon(Icons.search), // Add a search icon
-        
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(
-                    color: Colors.grey,
-                    width: 1.0,
+            padding: EdgeInsets.symmetric(
+                vertical: 12.0,
+                horizontal: 16.0), // Add space only above the search bar
+            child: Container(
+              margin: EdgeInsets.symmetric(
+                  vertical: 10.0), // Adjust vertical margin as needed
+              child: TextField(
+                controller: _searchController,
+                decoration: InputDecoration(
+                  hintText: 'Pretraga projekta...',
+                  hintStyle: TextStyle(fontSize: isDesktop ? 30 : 20),
+                  prefixIcon: Icon(Icons.search), // Add a search icon
+
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide(
+                      color: Colors.grey,
+                      width: 1.0,
+                    ),
                   ),
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
                 ),
-                contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+                style: TextStyle(fontSize: isDesktop ? 30 : 20),
+                onChanged: _searchProjects,
               ),
-              style: TextStyle(fontSize: isDesktop ? 30 : 20),
-              onChanged: _searchProjects,
             ),
           ),
-        ),
-
-Expanded(
-  child: ListView.builder(
-    itemCount: _filteredProjects.length,
-    itemBuilder: (context, index) {
-      Project project = _filteredProjects[index];
-      return Container(
-        margin: EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10.0),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 2,
-              blurRadius: 5,
-              offset: Offset(0, 3), // changes position of shadow
-            ),
-          ],
-        ),
-        child: ListTile(
-          title: Text(
-            project.naziv,
-            style: TextStyle(
-              fontSize: isDesktop ? 32 : 30,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Roboto',
+          Expanded(
+            child: ListView.builder(
+              itemCount: _filteredProjects.length,
+              itemBuilder: (context, index) {
+                Project project = _filteredProjects[index];
+                return Container(
+                  margin: EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: Offset(0, 3), // changes position of shadow
+                      ),
+                    ],
+                  ),
+                  child: ListTile(
+                    title: Text(
+                      project.naziv,
+                      style: TextStyle(
+                        fontSize: isDesktop ? 32 : 30,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Roboto',
+                      ),
+                    ),
+                    subtitle: Text(
+                      project.adresa,
+                      style: TextStyle(
+                        fontSize: isDesktop ? 28 : 22,
+                        fontFamily: 'Oswald',
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                ProjectDetailPage(project: project)),
+                      );
+                    },
+                  ),
+                );
+              },
             ),
           ),
-          subtitle: Text(
-            project.adresa,
-            style: TextStyle(
-              fontSize: isDesktop ? 28 : 22,
-               fontFamily: 'Oswald',
-            ),
-          ),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ProjectDetailPage(project: project)),
-            );
-          },
-        ),
-      );
-    },
-  ),
-),
-
         ],
       ),
       endDrawer: !isDesktop ? _buildDrawer() : null,
@@ -283,23 +289,31 @@ Expanded(
                 return FutureBuilder<String?>(
                   future: _databaseService.getUserRole(userId),
                   builder: (context, roleSnapshot) {
-                    if (roleSnapshot.connectionState == ConnectionState.waiting) {
+                    if (roleSnapshot.connectionState ==
+                        ConnectionState.waiting) {
                       return CircularProgressIndicator();
                     } else if (roleSnapshot.hasData) {
                       String? userRole = roleSnapshot.data;
                       if (userRole == 'admin' || userRole == 'moderator') {
                         return ListTile(
-                          tileColor: Colors.white, // Set the background color of the ListTile
+                          tileColor: Colors
+                              .white, // Set the background color of the ListTile
                           title: Center(
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center, // Align the content to the center
+                              mainAxisAlignment: MainAxisAlignment
+                                  .center, // Align the content to the center
                               children: [
                                 Text(
                                   'Administrator',
-                                  style: TextStyle(fontSize: 20), // Adjust the font size of the text
+                                  style: TextStyle(
+                                      fontSize:
+                                          20), // Adjust the font size of the text
                                 ),
-                                SizedBox(width: 10), // Add spacing between text and icon
-                                Icon(Icons.admin_panel_settings), // Add an icon after the text
+                                SizedBox(
+                                    width:
+                                        10), // Add spacing between text and icon
+                                Icon(Icons
+                                    .admin_panel_settings), // Add an icon after the text
                               ],
                             ),
                           ),
@@ -307,13 +321,12 @@ Expanded(
                             Navigator.pop(context);
                             await Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => AdminPanel()),
+                              MaterialPageRoute(
+                                  builder: (context) => AdminPanel()),
                             );
                             _fetchProjects();
                           },
                         );
-
-
                       }
                     }
                     // Return an empty container if the user is not an administrator
@@ -327,13 +340,16 @@ Expanded(
           ),
           ListTile(
             tileColor: Colors.white, // Set the background color of the ListTile
-            shape: Border(bottom: BorderSide(color: Colors.grey),top:BorderSide(color: Colors.grey)), // Add a bottom border
+            shape: Border(
+                bottom: BorderSide(color: Colors.grey),
+                top: BorderSide(color: Colors.grey)), // Add a bottom border
             title: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   'Log out',
-                  style: TextStyle(fontSize: 20), // Adjust the font size of the text
+                  style: TextStyle(
+                      fontSize: 20), // Adjust the font size of the text
                 ),
                 SizedBox(width: 10), // Add spacing between text and icon
                 Icon(Icons.logout), // Add an icon after the text

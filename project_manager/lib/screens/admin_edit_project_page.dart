@@ -22,9 +22,9 @@ class AdminProjectDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.secondaryColor,
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: AppColors.primaryColor,
+        backgroundColor: AppColors.secondaryColor,
         title: Text('${project.naziv} ${project.adresa}'),
                 actions: [
           IconButton(
@@ -36,7 +36,7 @@ class AdminProjectDetailPage extends StatelessWidget {
         ],
         
       ),
-      body: Center(
+     body: Center(
         child: StreamBuilder(
           stream: DatabaseService().streamProject(project.id),
           builder: (context, AsyncSnapshot<Project> snapshot) {
@@ -47,22 +47,82 @@ class AdminProjectDetailPage extends StatelessWidget {
             } else {
               Project updatedProject = snapshot.data!;
               return GridView.count(
-                crossAxisCount: 2,
+                crossAxisCount: MediaQuery.of(context).size.width > 600 ? 3 : 1,
                 padding: EdgeInsets.all(16.0),
                 mainAxisSpacing: 20.0,
                 crossAxisSpacing: 20.0,
                 childAspectRatio: 3,
                 children: [
-                  buildButton(context, 'Ponude', PonudePage(projectId: updatedProject.id), Colors.blue, 'handshake.jpg'),
-                  buildButton(context, 'Plan Produkcije', PlanProdukcijePage(projectId: updatedProject.id), Colors.green, 'planProdukcije.jpg'),
-                  buildButton(context, 'Nabavka i Produkcija', NabavkaIProdukcijaPage(projectId: updatedProject.id), Colors.orange, 'produkcija.jpg'),
-                  buildButton(context, 'Skladiste i Transport', SkladisteITransportPage(projectId: updatedProject.id), Colors.purple, 'skladiste_i_transport.jpg'),
-                  buildButton(context, 'Montaza', MontazaPage(projectId: updatedProject.id), Colors.red, 'montaza.jpg'),
-                  buildButton(context, 'Verifikacija Projekta', VerifikacijaProjektaPage(projectId: updatedProject.id), Colors.teal, 'verifikacija.jpg'),
-                  buildButton(context, 'Kolicina', KolicinaPage(projectId: updatedProject.id), Colors.indigo, 'kolicina.jpg'),
-                  buildButton(context, 'Defekti', DefektiPage(projectId: updatedProject.id), Colors.white30, 'defekti.jpg'),
-                  buildButton(context, 'Zahtevi', ZahteviPage(projectId: updatedProject.id), Colors.amberAccent, 'zahtevi.jpg'),
-                  buildButton(context, 'Status', StatusPage(projectId: updatedProject.id), Colors.brown, 'status.jpg'),
+                  buildButton(
+                    context,
+                    'Ponude',
+                    PonudePage(projectId: updatedProject.id),
+                    Colors.blue,
+                    'handshake.jpg',
+                  ),
+                  buildButton(
+                    context,
+                    'Plan Produkcije',
+                    PlanProdukcijePage(projectId: updatedProject.id),
+                    Colors.green,
+                    'planProdukcije.jpg',
+                  ),
+                  buildButton(
+                    context,
+                    'Nabavka i Produkcija',
+                    NabavkaIProdukcijaPage(projectId: updatedProject.id),
+                    Colors.orange,
+                    'produkcija.jpg',
+                  ),
+                  buildButton(
+                    context,
+                    'Skladiste i Transport',
+                    SkladisteITransportPage(projectId: updatedProject.id),
+                    Colors.purple,
+                    'skladiste_i_transport.jpg',
+                  ),
+                  buildButton(
+                    context,
+                    'Montaza',
+                    MontazaPage(projectId: updatedProject.id),
+                    Colors.red,
+                    'montaza.jpg',
+                  ),
+                  buildButton(
+                    context,
+                    'Verifikacija Projekta',
+                    VerifikacijaProjektaPage(projectId: updatedProject.id),
+                    Colors.teal,
+                    'verifikacija.jpg',
+                  ),
+                  buildButton(
+                    context,
+                    'Kolicina',
+                    KolicinaPage(projectId: updatedProject.id),
+                    Colors.indigo,
+                    'kolicina.jpg',
+                  ),
+                  buildButton(
+                    context,
+                    'Defekti',
+                    DefektiPage(projectId: updatedProject.id),
+                    Colors.white30,
+                    'defekti.jpg',
+                  ),
+                  buildButton(
+                    context,
+                    'Zahtevi',
+                    ZahteviPage(projectId: updatedProject.id),
+                    Colors.amberAccent,
+                    'zahtevi.jpg',
+                  ),
+                  buildButton(
+                    context,
+                    'Status',
+                    StatusPage(projectId: updatedProject.id),
+                    Colors.brown,
+                    'status.jpg',
+                  ),
                 ],
               );
             }
@@ -72,79 +132,91 @@ class AdminProjectDetailPage extends StatelessWidget {
     );
   }
 
-
-
-Widget buildButton(BuildContext context, String text, Widget destination, Color color, String imageName) {
-  return Stack(
-    alignment: Alignment.center,
-    children: [
-      Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10), // Border radius to cut the edges
-        ),
-        width: double.infinity,
-        height: double.infinity,
-        
-        child: Image.asset(
-          'assets/$imageName',
-          fit: BoxFit.cover,
-        ),
-      ),
-      Positioned.fill(
-        top: text == 'Ponude' ? -10 : 0, // Adjust the top position based on the button text
-        child: Container(
-          color: text == 'Ponude' ?
-           Colors.blue.withOpacity(0.5) : text == 'Nabavka i Produkcija' ?
-           Colors.orange.withOpacity(0.5) : text == 'Plan Produkcije' ?
-           Colors.green.withOpacity(0.5) : text == 'Skladiste i Transport' ?
-           Colors.purple.withOpacity(0.5) : text == 'Montaza' ?
-           Colors.red.withOpacity(0.5) : text == 'Verifikacija Projeta' ? 
-           Colors.teal.withOpacity(0.5) : text == 'Kolicina' ?
-           Colors.indigo.withOpacity(0.5) : text == 'Defekti' ?
-           Colors.white30.withOpacity(0.5) : text == 'Zahtevi' ? 
-           Colors.amberAccent.withOpacity(0.5) : 
-           Colors.brown.withOpacity(0.5)
+  Widget buildButton(BuildContext context, String text, Widget destination,
+      Color color, String imageName) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            borderRadius:
+                BorderRadius.circular(10), // Border radius to cut the edges
           ),
-      ),
-      SizedBox(
-        width: double.infinity,
-        height: double.infinity,
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => destination),
-            );
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.transparent, // Make the button background transparent
-      // Text color
-            shape: RoundedRectangleBorder(
-          // Button border radius
-            ),
+          width: double.infinity,
+          height: double.infinity,
+          child: Image.asset(
+            'assets/$imageName',
+            fit: BoxFit.cover,
           ),
-          child: Center(
-            child: Text(
-              text,
-              style: TextStyle(
-                fontSize: MediaQuery.of(context).size.width * 0.045,
-                fontFamily: 'Pacifico', // Example of using a custom font
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                decorationThickness: 2,
-                decorationStyle: TextDecorationStyle.double, // Use double line style
-                shadows: [
-                  Shadow(
-                    blurRadius: 4,
-                    color: Colors.black.withOpacity(0.5),
-                    offset: Offset(2, 2),
+        ),
+        Positioned.fill(
+          top: text == 'Ponude'
+              ? -10
+              : 0, // Adjust the top position based on the button text
+          child: Container(
+            color: text == 'Ponude'
+                ? Colors.blue.withOpacity(0.5)
+                : text == 'Nabavka i Produkcija'
+                    ? Colors.orange.withOpacity(0.5)
+                    : text == 'Plan Produkcije'
+                        ? Colors.green.withOpacity(0.5)
+                        : text == 'Skladiste i Transport'
+                            ? Colors.purple.withOpacity(0.5)
+                            : text == 'Montaza'
+                                ? Colors.red.withOpacity(0.5)
+                                : text == 'Verifikacija Projekta'
+                                    ? Colors.teal.withOpacity(0.5)
+                                    : text == 'Kolicina'
+                                        ? Colors.indigo.withOpacity(0.5)
+                                        : text == 'Defekti'
+                                            ? Colors.white30.withOpacity(0.5)
+                                            : text == 'Zahtevi'
+                                                ? Colors.amberAccent
+                                                    .withOpacity(0.5)
+                                                : Colors.brown.withOpacity(0.5),
+          ),
+        ),
+        SizedBox(
+          width: double.infinity,
+          height: double.infinity,
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => destination),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor:
+                  Colors.transparent, // Make the button background transparent
+              // Text color
+              shape: RoundedRectangleBorder(
+                  // Button border radius
                   ),
-                ],
+            ),
+            child: Center(
+              child: Text(
+                text,
+                style: TextStyle(
+                  fontSize: MediaQuery.of(context).size.width > 600 ? 50 : 36,
+                  fontFamily: 'Pacifico', // Example of using a custom font
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  decorationThickness: 2,
+                  decorationStyle:
+                      TextDecorationStyle.double, // Use double line style
+                  shadows: [
+                    Shadow(
+                      blurRadius: 4,
+                      color: Colors.black.withOpacity(0.5),
+                      offset: Offset(2, 2),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
         ),
-      ),
     ],
   );
 }

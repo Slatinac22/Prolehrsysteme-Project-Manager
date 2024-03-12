@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:project_manager/models/project.dart';
 import 'package:project_manager/services/database.dart';
 import 'package:project_manager/shared/addProjectInputBox.dart';
+import 'package:project_manager/shared/colors.dart';
 
 class AddProjectPage extends StatefulWidget {
   @override
@@ -52,8 +53,26 @@ class _AddProjectPageState extends State<AddProjectPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Add Project'),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(60.0),
+        child: Material(
+          elevation: 10, // Add elevation here
+          child: AppBar(
+            backgroundColor: AppColors.secondaryColor,
+                         title: Padding(
+                padding: EdgeInsets.only(right: 50), // Add left padding
+                child: Center(
+                  child: Text(
+                    'Dodaj projekat',
+                    style: TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                ),
+              ),
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -139,17 +158,39 @@ class _AddProjectPageState extends State<AddProjectPage> {
     );
   }
 
-  Widget _buildButton(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: () {
-          _addProject();
-        },
-        child: Text('Add Project'),
+Widget _buildButton(BuildContext context) {
+  return SizedBox(
+    width: double.infinity,
+    child: ElevatedButton(
+      onPressed: () {
+        _addProject();
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColors.primaryColor, // Background color
+   
+        padding: EdgeInsets.symmetric(vertical: 25), // Padding
+        shape: RoundedRectangleBorder(
+          
+          borderRadius: BorderRadius.circular(10), // Rounded corners
+        ),
+        elevation: 3, // Shadow
       ),
-    );
-  }
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+
+          SizedBox(width: 10), // Spacer
+          Text(
+            'Dodaj projekat',
+            style: TextStyle(fontSize: 18,color: Colors.black), // Text style
+          ),
+                    Icon(Icons.add,color:Colors.black), // Add icon
+        ],
+      ),
+    ),
+  );
+}
+
   void _addProject() {
     String naziv = _nazivController.text.trim();
     String adresa = _adresaController.text.trim();

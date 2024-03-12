@@ -12,7 +12,7 @@ void main() async {
   await Firebase.initializeApp(
     options: FirebaseOptions(
       apiKey: "AIzaSyAVpcN6MdTONJ7YqKqROjPWRM4R0WwoNos",
-      appId: "1:1019738645122:web:e0edcbffa7ce9f646e0a9b",
+      appId: "1:1019738645122:web:97f2edc31343c9506e0a9b",
       messagingSenderId: "1019738645122",
       projectId: "prolehrsysteme-project-m-c7547",
     ),
