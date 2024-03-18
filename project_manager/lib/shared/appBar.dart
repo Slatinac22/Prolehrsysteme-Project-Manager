@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_manager/shared/colors.dart';
+
 AppBar buildCustomAppBar(String title) {
   return AppBar(
     toolbarHeight: 60,
@@ -14,6 +15,7 @@ AppBar buildCustomAppBar(String title) {
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.w900,
+            fontFamily: 'Oswald',
           ),
         ),
       ),

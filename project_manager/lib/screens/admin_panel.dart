@@ -76,6 +76,7 @@ class _AdminPanelState extends State<AdminPanel> {
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.w900,
+                      fontFamily: 'Oswald',
                     ),
                   ),
                 ),
@@ -144,13 +145,13 @@ class _AdminPanelState extends State<AdminPanel> {
                       style: TextStyle(fontSize: 16.0),
                     ),
                    onTap: () {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => AdminProjectDetailPage(project: project),
-    ),
-  );
-},
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AdminProjectDetailPage(project: project),
+                      ),
+                    );
+                  },
 
                   ),
                 );

@@ -67,6 +67,7 @@ class _AddProjectPageState extends State<AddProjectPage> {
                     style: TextStyle(
                       fontSize: 26,
                       fontWeight: FontWeight.w900,
+                      fontFamily: 'Oswald',
                     ),
                   ),
                 ),
@@ -166,7 +167,7 @@ Widget _buildButton(BuildContext context) {
         _addProject();
       },
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.primaryColor, // Background color
+        backgroundColor: AppColors.strongColor, // Background color
    
         padding: EdgeInsets.symmetric(vertical: 25), // Padding
         shape: RoundedRectangleBorder(

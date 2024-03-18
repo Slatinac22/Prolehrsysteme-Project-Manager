@@ -2,8 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:project_manager/models/project.dart';
 import 'package:project_manager/services/database.dart';
-import 'package:project_manager/shared/colors.dart'; 
 import 'package:project_manager/shared/appBar.dart';
+import 'package:project_manager/shared/buildDataItem.dart';
+
 
 class DefektiPage extends StatelessWidget {
   final String projectId;
@@ -14,7 +15,7 @@ class DefektiPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: buildCustomAppBar('Defekti'), // Correct usage of buildCustomAppBar
+      appBar: buildCustomAppBar('Defekti'), 
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: StreamBuilder<Project>(
@@ -28,19 +29,18 @@ class DefektiPage extends StatelessWidget {
               return Center(child: Text('No project data available'));
             } else {
               Project project = snapshot.data!;
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              return ListView(
                 children: [
                   SizedBox(height: 20),
-                  _buildDataItem('Defekti', project.defekti, context),
+                  buildDataItem('Defekti', project.defekti),
                   SizedBox(height: 20),
-                  _buildDataItem('Datum prijave defekta', project.datum_prijave_defekta, context),
+                  buildDataItem('Datum prijave defekta', project.datum_prijave_defekta),
                   SizedBox(height: 20),
-                  _buildDataItem('Status transporta', project.status_transporta, context),
+                  buildDataItem('Status transporta', project.status_transporta),
                   SizedBox(height: 20),
-                  _buildDataItem('Status ponude', project.status_ponude_defekti, context),
+                  buildDataItem('Status ponude', project.status_ponude_defekti),
                   SizedBox(height: 20),
-                  _buildDataItem('Zavrseno', project.zavrseno, context),                                    
+                  buildDataItem('Zavrseno', project.zavrseno),                                    
                 ],
               );
             }
@@ -50,26 +50,5 @@ class DefektiPage extends StatelessWidget {
     );
   }
 
-  Widget _buildDataItem(String title, String data, BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: screenWidth > 600 ? 30 : 16, // Adjust font size based on screen width
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
-        ),
-        SizedBox(height: 5),
-        Text(
-          data,
-          style: TextStyle(fontSize: screenWidth > 600 ? 30 : 14), // Adjust font size based on screen width
-        ),
-      ],
-    );
-  }
 }

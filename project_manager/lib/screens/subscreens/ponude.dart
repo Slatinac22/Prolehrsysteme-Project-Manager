@@ -3,6 +3,7 @@ import 'package:project_manager/models/project.dart';
 import 'package:project_manager/services/database.dart';
 import 'package:project_manager/shared/colors.dart'; 
 import 'package:project_manager/shared/appBar.dart';
+import 'package:project_manager/shared/buildDataItem.dart';
 
 
 class PonudePage extends StatelessWidget {
@@ -31,11 +32,11 @@ class PonudePage extends StatelessWidget {
               return ListView(
                 children: [
                   SizedBox(height: 20),
-                  _buildDataItem('Ponuda:', project.ponuda),
+                  buildDataItem('Ponuda:', project.ponuda),
                   SizedBox(height: 20),
-                  _buildDataItem('Datum Dobijanja Ponude:', project.datum_dobijanja_ponude),
+                  buildDataItem('Datum Dobijanja Ponude:', project.datum_dobijanja_ponude),
                   SizedBox(height: 20),
-                  _buildDataItem('Status Ponude:', project.status_ponude),
+                  buildDataItem('Status Ponude:', project.status_ponude),
                 ],
               );
             }
@@ -45,38 +46,7 @@ class PonudePage extends StatelessWidget {
     );
   }
 
-  Widget _buildDataItem(String title, String data) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 5,
-            offset: Offset(10, 10),
-          ),
-        ],
-      ),
-      padding: EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
-          ),
-          SizedBox(height: 8),
-          Text(
-            data,
-            style: TextStyle(fontSize: 18, color: Colors.black87),
-          ),
-        ],
-      ),
-    );
-  }
+
+
+
 }

@@ -31,7 +31,7 @@ class ProjectDetailPage extends StatelessWidget {
             backgroundColor: AppColors.secondaryColor,
             centerTitle: true,
             title: Text(
-              'Informacije', // App bar title from the first code
+              '${project.naziv} ${project.adresa}', // App bar title from the first code
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.w900,

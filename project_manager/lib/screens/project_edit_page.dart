@@ -3,6 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:project_manager/models/project.dart';
 import 'package:project_manager/services/database.dart';
+import 'package:project_manager/shared/appBar.dart';
+import 'package:project_manager/shared/colors.dart';
+
 
 class ProjectEditPage extends StatefulWidget {
   final Project project;
@@ -137,9 +140,7 @@ class _ProjectEditPageState extends State<ProjectEditPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Add Project'),
-      ),
+      appBar: buildCustomAppBar('Azuriraj projekat'),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -200,17 +201,33 @@ class _ProjectEditPageState extends State<ProjectEditPage> {
     );
   }
 
-  Widget _buildButton(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: () {
-          _updateProject();
-        },
-        child: Text('Azuriraj'),
+Widget _buildButton(BuildContext context) {
+  return SizedBox(
+    width: double.infinity,
+    child: ElevatedButton(
+      onPressed: () {
+        _updateProject();
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColors.strongColor,
+        padding: EdgeInsets.symmetric(vertical: 16), // Button padding
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30), // Button border radius
+        ),
+        elevation: 3, // Button shadow
       ),
-    );
-  }
+      child: Text(
+        'Azuriraj',
+        style: TextStyle(
+          fontSize: 18, // Text size
+          fontWeight: FontWeight.bold,
+          color:Colors.black, // Text weight
+        ),
+      ),
+    ),
+  );
+}
+
 
   Widget _buildSectionTitle(String title) {
     return Padding(

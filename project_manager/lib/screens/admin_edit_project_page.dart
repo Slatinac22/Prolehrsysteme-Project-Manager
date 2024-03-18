@@ -25,7 +25,13 @@ class AdminProjectDetailPage extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: AppColors.secondaryColor,
-        title: Text('${project.naziv} ${project.adresa}'),
+        title: Text(
+              '${project.naziv} ${project.adresa}', // App bar title from the first code
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.w900,
+              ),
+            ),
                 actions: [
           IconButton(
             onPressed: () {
