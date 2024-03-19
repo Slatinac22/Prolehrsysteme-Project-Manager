@@ -26,7 +26,7 @@ class AdminProjectDetailPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AppColors.secondaryColor,
         title: Text(
-              '${project.naziv} ${project.adresa}', // App bar title from the first code
+              '${project.naziv}', // App bar title from the first code
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.w900,

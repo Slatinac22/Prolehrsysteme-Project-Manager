@@ -1,10 +1,5 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
-
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:project_manager/services/auth.dart';
-import 'package:project_manager/shared/constants.dart';
 import 'package:project_manager/shared/loading.dart';
 import 'dart:ui';
 
@@ -20,14 +15,10 @@ class _SignInState extends State<SignIn> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
-
   // Text field state
   String email = '';
   String password = '';
   String error = '';
-
-  // Timer for debouncing
- 
 
   @override
   Widget build(BuildContext context) {
@@ -36,18 +27,22 @@ class _SignInState extends State<SignIn> {
     return loading
         ? Loading()
         : Scaffold(
-            backgroundColor: Color.fromARGB(100, 60, 181, 208),
-            body: screenWidth > 600
-                ? _buildDesktopLayout()
-                : _buildMobileLayout(),
+            backgroundColor: Color.fromARGB(255, 180, 190, 200),
+            body: _buildLayout(screenWidth),
           );
+  }
+
+  Widget _buildLayout(double screenWidth) {
+    return screenWidth > 600
+        ? _buildDesktopLayout()
+        : _buildMobileLayout(screenWidth);
   }
 
   Widget _buildDesktopLayout() {
     return Row(
       children: [
         Expanded(
-          flex: 1,
+          flex: 3,
           child: Container(
             color: Colors.white,
             child: Image.asset(
@@ -59,7 +54,7 @@ class _SignInState extends State<SignIn> {
         Expanded(
           flex: 2,
           child: Container(
-            padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
+            padding: EdgeInsets.only(bottom: 200),
             child: _buildForm(),
           ),
         ),
@@ -67,16 +62,19 @@ class _SignInState extends State<SignIn> {
     );
   }
 
-  Widget _buildMobileLayout() {
-    return Stack(
+
+Widget _buildMobileLayout(double screenWidth) {
+  return SingleChildScrollView(
+    physics: NeverScrollableScrollPhysics(),
+    child: Stack(
       children: [
-        Positioned.fill(
-          child: Container(
-            color: Colors.transparent,
-            child: Image.asset(
-              'assets/signInImage.jpg',
-              fit: BoxFit.cover,
-            ),
+        Container(
+          color: Colors.transparent,
+          child: Image.asset(
+            'assets/signInImage.jpg',
+            fit: BoxFit.fill, // Adjusted fit property
+            height: MediaQuery.of(context).size.height, // Ensure full height
+            width: MediaQuery.of(context).size.width, // Ensure full width
           ),
         ),
         Positioned.fill(
@@ -89,216 +87,197 @@ class _SignInState extends State<SignIn> {
           ),
         ),
       ],
-    );
-  }
+    ),
+  );
+}
+
+
+
+
 
   Widget _buildForm() {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(height: 100.0),
-              Text(
-                'Dobrodošli',
-                style: TextStyle(
-                  
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                   fontFamily: 'Oswald',
-                  color: Colors.white,
-                  shadows: [
-                    Shadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      offset: Offset(4, 4),
-                      blurRadius: 10,
-                    ),
-                    Shadow(
-                      color: Colors.white.withOpacity(0.5),
-                      offset: Offset(-4, -4),
-                      blurRadius: 10,
-                    ),
-                 ],
-                ),
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(height: 100.0),
+            Text(
+              'Dobrodošli',
+              style: TextStyle(
+                fontSize: 60,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Oswald',
+                color: Colors.white,
+                shadows: [
+                  Shadow(
+                    color: Colors.black.withOpacity(0.5),
+                    offset: Offset(4, 4),
+                    blurRadius: 5,
+                  ),
+                ],
               ),
-                Text(
-                'Ulogujte se na svoj nalog :',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                   fontFamily: 'Roboto',
-                  color: Colors.white70,
-                  shadows: [
-                    Shadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      offset: Offset(4, 4),
-                      blurRadius: 10,
-                    ),
-                    Shadow(
-                      color: Colors.white.withOpacity(0.5),
-                      offset: Offset(-4, -4),
-                      blurRadius: 10,
-                    ),
-                 ],
-                ),
+            ),
+            SizedBox(height: 20),
+            Text(
+              'Ulogujte se na svoj nalog :',
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Oswald',
+                color: Colors.white,
+                shadows: [
+                  Shadow(
+                    color: Colors.black.withOpacity(0.5),
+                    offset: Offset(4, 4),
+                    blurRadius: 5,
+                  ),
+                ],
               ),
-              SizedBox(height: 30.0),
-              Text(
-                'Email',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                 fontFamily: 'Roboto',
-
-                  color: Colors.white,
-                  shadows: [
-                    Shadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      offset: Offset(4, 4),
-                      blurRadius: 10,
-                    ),
-                    Shadow(
-                      color: Colors.white.withOpacity(0.5),
-                      offset: Offset(-4, -4),
-                      blurRadius: 10,
-                    ),
-                 ],                  
-                ),
-              ),
-              SizedBox(height: 10.0),
-              TextFormField(
-                              
-                decoration: InputDecoration(
-                  hintText: 'E-Mail',
-                  hintStyle: TextStyle(color: Colors.black),
-                  prefixIcon: Icon(Icons.email, color:Colors.black),
-                  filled: true,
-                  fillColor: Color.fromARGB(170, 255, 255, 255),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: BorderSide(
-                      color: Colors.white, // Border color when focused
-                    ),
+            ),
+            SizedBox(height: 30.0),
+            TextFormField(
+              decoration: InputDecoration(
+                hintText: 'E-Mail',
+                hintStyle: TextStyle(color: Colors.black),
+                prefixIcon: Icon(Icons.email, color: Colors.black),
+                filled: true,
+                fillColor: Color.fromARGB(170, 255, 255, 255),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.white, // Border color when focused
                   ),
                 ),
-                validator: (val) => val!.isEmpty ? 'Unesi E-Mail' : null,
-                onChanged: (val) {
-                  setState(() {
-                    email = val; // Update email variable here
-                  });
-                },
-
               ),
-              SizedBox(height: 20.0),
-              Text(
-                'Password',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Roboto',
-                  color: Colors.white,
-                  shadows: [
-                    Shadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      offset: Offset(4, 4),
-                      blurRadius: 10,
-                    ),
-                    Shadow(
-                      color: Colors.white.withOpacity(0.5),
-                      offset: Offset(-4, -4),
-                      blurRadius: 10,
-                    ),
-                 ],                  
+              validator: (val) => val!.isEmpty ? 'Unesi E-Mail' : null,
+              onChanged: (val) {
+                setState(() {
+                  email = val; // Update email variable here
+                });
+              },
+            ),
+            SizedBox(height: 20.0),
+            TextFormField(
+              decoration: InputDecoration(
+                hintText: 'Lozinka',
+                hintStyle: TextStyle(color: Colors.black),
+                prefixIcon: Icon(Icons.lock, color: Colors.black),
+                filled: true,
+                fillColor: Color.fromARGB(170, 255, 255, 255),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.white, // White border color
+                    width: 2.0, // Increased border width
+                  ),
                 ),
               ),
-              SizedBox(height: 10.0),
-              TextFormField(
-  decoration: InputDecoration(
-    hintText: 'Lozinka',
-    hintStyle: TextStyle(color: Colors.black),
-    prefixIcon: Icon(Icons.lock, color: Colors.black),
-    filled: true,
-    fillColor: Color.fromARGB(170, 255, 255, 255),
-    border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(10.0),
-      borderSide: BorderSide(
-        color: Colors.white, // White border color
-        width: 2.0, // Increased border width
-      ),
-    ),
-  ),
-  style: TextStyle(color: Colors.black),
-  validator: (val) =>
-      val!.length < 6 ? 'Unesi lozinku koja ima 6+ karaktera' : null,
-  obscureText: true,
-  onChanged: (val) {
-    setState(() {
-      password = val; // Update password variable here
-    });
-  },
-       
+              style: TextStyle(color: Colors.black),
+              validator: (val) =>
+                  val!.length < 6 ? 'Unesi lozinku koja ima 6+ karaktera' : null,
+              obscureText: true,
+              onChanged: (val) {
+                setState(() {
+                  password = val; // Update password variable here
+                });
+              },
+            ),
+            SizedBox(height: 30.0),
+            AnimatedSignInButton(
+              onPressed: () async {
+                if (_formKey.currentState?.validate() ?? false) {
+                  setState(() => loading = true);
+                  dynamic result =
+                      await _auth.signInWithEmailPassword(email, password);
 
-              ),
-              SizedBox(height: 30.0),
-              ElevatedButton(
-                onPressed: () async {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    setState(() => loading = true);
-                    dynamic result =
-                        await _auth.signInWithEmailPassword(email, password);
-
-                    if (result == null) {
-                      setState(() {
-                        error = 'Could not sign in with those credentials';
-                        loading = false;
-                      });
-                    }
+                  if (result == null) {
+                    setState(() {
+                      error = 'Could not sign in with those credentials';
+                      loading = false;
+                    });
                   }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  padding: EdgeInsets.symmetric(horizontal: 40, vertical: 16),
-                  elevation: 5,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
-                  shadowColor: Colors.black,
-                ),
-                child: loading
-                    ? SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                        ),
-                      )
-                    : Text(
-                        'Uloguj se',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-              ),
-              SizedBox(height: 12.0),
-              Text(
-                error,
-                style: TextStyle(color: Colors.black, fontSize: 14.0),
-              ),
-            ],
-          ),
+                }
+              },
+              loading: loading,
+            ),
+            SizedBox(height: 12.0),
+            Text(
+              error,
+              style: TextStyle(color: Colors.black, fontSize: 14.0),
+            ),
+          ],
         ),
       ),
     );
   }
+}
+
+class AnimatedSignInButton extends StatefulWidget {
+  final Function onPressed;
+  final bool loading;
+
+  AnimatedSignInButton({required this.onPressed, required this.loading});
 
   @override
-  void dispose() {
- 
-    super.dispose();
+  _AnimatedSignInButtonState createState() => _AnimatedSignInButtonState();
+}
+
+class _AnimatedSignInButtonState extends State<AnimatedSignInButton> {
+  bool _isHovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: InkWell(
+        onTap: widget.loading ? null : widget.onPressed as void Function()?,
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 300),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(30.0),
+            boxShadow: _isHovered
+                ? [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.5),
+                      blurRadius: 10.0,
+                      offset: Offset(5, 10),
+                    ),
+                  ]
+                : null,
+          ),
+          child: ElevatedButton(
+            onPressed: widget.loading ? null : widget.onPressed as void Function()?,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white,
+              padding: EdgeInsets.symmetric(horizontal: 40, vertical: 16),
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+            ),
+            child: widget.loading
+                ? SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    ),
+                  )
+                : Text(
+                    'Uloguj se',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+          ),
+        ),
+      ),
+    );
   }
 }

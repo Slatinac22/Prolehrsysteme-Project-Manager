@@ -3,6 +3,7 @@ import 'package:project_manager/models/project.dart';
 import 'package:project_manager/screens/project_edit_page.dart';
 import 'package:project_manager/screens/subscreens/defekti.dart';
 import 'package:project_manager/screens/subscreens/kolicina.dart';
+import 'package:project_manager/screens/subscreens/kontakt.dart';
 import 'package:project_manager/screens/subscreens/montaza.dart';
 import 'package:project_manager/screens/subscreens/nabavka_i_produkcija.dart';
 import 'package:project_manager/screens/subscreens/plan_produkcije.dart';
@@ -31,7 +32,7 @@ class ProjectDetailPage extends StatelessWidget {
             backgroundColor: AppColors.secondaryColor,
             centerTitle: true,
             title: Text(
-              '${project.naziv} ${project.adresa}', // App bar title from the first code
+              '${project.naziv}', // App bar title from the first code
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.w900,
@@ -125,6 +126,13 @@ class ProjectDetailPage extends StatelessWidget {
                     'Status',
                     StatusPage(projectId: updatedProject.id),
                     Colors.brown,
+                    'status.jpg',
+                  ),
+                    buildButton(
+                    context,
+                    'Status',
+                    KontaktPage(projectId: updatedProject.id),
+                    Colors.pinkAccent,
                     'status.jpg',
                   ),
                 ],

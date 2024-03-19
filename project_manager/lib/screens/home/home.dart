@@ -63,13 +63,13 @@ class _HomeState extends State<Home> {
             elevation: 10, // Add elevation here
             child: AppBar(
               toolbarHeight: isDesktop ? 100 : 80,
-              title: Center(
-                child: Text(
-                  'Project Manager',
-                  style: TextStyle(
-                    fontSize: isDesktop ? 50 : 40,
-                    fontWeight: FontWeight.w900,
-                  ),
+              centerTitle: true, // Center the title
+              title: Text(
+                'Project Manager',
+                style: TextStyle(
+                  fontSize: isDesktop ? 50 : 36,
+                  fontWeight: FontWeight.w700,
+                  fontFamily: 'Oswald',
                 ),
               ),
               backgroundColor: AppColors.secondaryColor,
@@ -88,7 +88,7 @@ class _HomeState extends State<Home> {
           Padding(
             padding: EdgeInsets.symmetric(
                 vertical: 12.0,
-                horizontal: 16.0), // Add space only above the search bar
+                horizontal: 30.0), // Add space only above the search bar
             child: Container(
               margin: EdgeInsets.symmetric(
                   vertical: 10.0), // Adjust vertical margin as needed
@@ -107,9 +107,9 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                   contentPadding:
-                      EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+                      EdgeInsets.symmetric(vertical: 10.0, horizontal: 30.0),
                 ),
-                style: TextStyle(fontSize: isDesktop ? 30 : 20),
+                style: TextStyle(fontSize: isDesktop ? 26 : 18),
                 onChanged: _searchProjects,
               ),
             ),
@@ -119,46 +119,45 @@ class _HomeState extends State<Home> {
               itemCount: _filteredProjects.length,
               itemBuilder: (context, index) {
                 Project project = _filteredProjects[index];
-                return Container(
-                  margin: EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: Offset(0, 3), // changes position of shadow
-                      ),
-                    ],
-                  ),
-                  child: ListTile(
-                    title: Text(
-                      project.naziv,
-                      style: TextStyle(
-                        fontSize: isDesktop ? 32 : 30,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Roboto',
-                      ),
-                    ),
-                    subtitle: Text(
-                      project.adresa,
-                      style: TextStyle(
-                        fontSize: isDesktop ? 28 : 22,
-                        fontFamily: 'Oswald',
-                      ),
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                ProjectDetailPage(project: project)),
-                      );
-                    },
-                  ),
-                );
+ return Card(
+  margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 30.0),
+  elevation: 5, // Add elevation for a shadow effect
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(15.0), // Adjust the border radius as needed
+    side: BorderSide(
+      color: Colors.black, // Choose your border color
+      width: 1.0, // Choose the border width
+    ),
+  ),
+  child: ListTile(
+    contentPadding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0), // Adjust padding as needed
+    title: Text(
+      project.naziv,
+      style: TextStyle(
+        fontSize: isDesktop ? 24 : 20,
+        fontWeight: FontWeight.bold,
+        fontFamily: 'Roboto',
+      ),
+    ),
+    subtitle: Text(
+      project.adresa,
+      style: TextStyle(
+        fontSize: isDesktop ? 22 : 18,
+        fontFamily: 'Oswald',
+      ),
+    ),
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ProjectDetailPage(project: project),
+        ),
+      );
+    },
+  ),
+);
+
+
               },
             ),
           ),
@@ -185,31 +184,60 @@ class _HomeState extends State<Home> {
                 } else if (roleSnapshot.hasData) {
                   String? userRole = roleSnapshot.data;
                   if (userRole == 'admin' || userRole == 'moderator') {
-                    return ElevatedButton(
-                      onPressed: () async {
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => AdminPanel()),
-                        );
-                        _fetchProjects();
-                      },
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.admin_panel_settings,
-                            color: Colors.black,
-                            size: 30,
-                          ),
-                          SizedBox(width: 8),
-                          Text(
-                            'Administrator',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 30,
+                    return Row(
+                      children: [
+                        ElevatedButton(
+                          onPressed: () async {
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AdminPanel()),
+                            );
+                            _fetchProjects();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: AppColors.secondaryColor,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 30, vertical: 15),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
                             ),
+                            elevation:
+                                5, // Add elevation to give a raised effect
+                            shadowColor: Colors.grey, // Set shadow color
+                            textStyle: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            side: BorderSide(
+                                color: Colors.black, width: 2), // Add border
+                            animationDuration: Duration(
+                                milliseconds: 300), // Add animation duration
+                            tapTargetSize: MaterialTapTargetSize
+                                .shrinkWrap, // Reduce tap target size
+                            visualDensity: VisualDensity
+                                .adaptivePlatformDensity, // Adjust button density
                           ),
-                        ],
-                      ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.admin_panel_settings,
+                                color: Colors.black,
+                                size: 30,
+                              ),
+                              SizedBox(width: 8),
+                              Text(
+                                'Administrator',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(width: 20), // Add spacing between buttons
+                      ],
                     );
                   } else {
                     return Text(
@@ -239,20 +267,38 @@ class _HomeState extends State<Home> {
           }
         },
       ),
-      SizedBox(width: 12),
       ElevatedButton.icon(
-        icon: Icon(Icons.logout_rounded, color: Colors.black),
+        icon: Icon(Icons.logout_rounded, color: Colors.black, size: 30),
         label: Text(
           'Odjavi se',
           style: TextStyle(
             color: Colors.black,
-            fontSize: 30,
+            fontSize: 20,
           ),
         ),
         onPressed: () async {
           await _auth.signOut();
         },
+        style: ElevatedButton.styleFrom(
+          primary: AppColors.secondaryColor,
+          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+          elevation: 5,
+          shadowColor: Colors.grey,
+          textStyle: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+          side: BorderSide(color: Colors.black, width: 2),
+          animationDuration: Duration(milliseconds: 300),
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
       ),
+
+      SizedBox(width: 20), // Add spacing after the buttons
     ];
   }
 
@@ -347,7 +393,7 @@ class _HomeState extends State<Home> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Log out',
+                  'Odjavi se',
                   style: TextStyle(
                       fontSize: 20), // Adjust the font size of the text
                 ),

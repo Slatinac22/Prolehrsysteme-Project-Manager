@@ -118,43 +118,51 @@ class _AdminPanelState extends State<AdminPanel> {
               itemCount: _filteredProjects.length,
               itemBuilder: (context, index) {
                 Project project = _filteredProjects[index];
-                return Card(
-                  margin:
-                      EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
-                  elevation: 5.0,
-                  child: ListTile(
-                    title: Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            project.naziv,
-                            style: TextStyle(
-                                fontSize: 18.0, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: () {
-                            _showDeleteConfirmationDialog(context, project.id);
-                          },
-                        ),
-                      ],
-                    ),
-                    subtitle: Text(
-                      project.adresa,
-                      style: TextStyle(fontSize: 16.0),
-                    ),
-                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => AdminProjectDetailPage(project: project),
-                      ),
-                    );
-                  },
+      return Card(
+  margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+  elevation: 5.0,
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(10.0),
+    side: BorderSide(
+      color: Colors.black, // Choose your border color
+      width: 1.0, // Choose the border width
+    ),
+  ),
+  child: ListTile(
+    title: Row(
+      children: [
+        Expanded(
+          child: Text(
+            project.naziv,
+            style: TextStyle(
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        IconButton(
+          icon: Icon(Icons.delete),
+          onPressed: () {
+            _showDeleteConfirmationDialog(context, project.id);
+          },
+        ),
+      ],
+    ),
+    subtitle: Text(
+      project.adresa,
+      style: TextStyle(fontSize: 16.0),
+    ),
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => AdminProjectDetailPage(project: project),
+        ),
+      );
+    },
+  ),
+);
 
-                  ),
-                );
               },
             ),
           ),

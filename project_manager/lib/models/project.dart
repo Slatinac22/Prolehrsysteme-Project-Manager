@@ -39,6 +39,7 @@ class Project {
   String status_zavrseno;
   String kolicina;
 
+
   String id;
 
   Project({
@@ -73,7 +74,6 @@ class Project {
     this.status_odobrenja_zahtevi = '',
     this.status_ponude_zahtevi = '',
     this.status_zahteva = '',
-
     this.planirani_pocetak_radova = '',
     this.nalazi_se = '',
     this.poslato_u_ch = '',
@@ -127,12 +127,10 @@ class Project {
       status_odobrenja_zahtevi: data['status_odobrenja_zahtevi'] ?? '',
       broj_porudzbine: data['broj_porudzbine'] ?? '',
       status_zahteva: data['status_zahteva'] ?? '',
-
       planirani_pocetak_radova: data['planirani_pocetak_radova'] ?? '',
       nalazi_se: data['nalazi_se'] ?? '',
       poslato_u_ch: data['poslato_u_ch'] ?? '',
       status_zavrseno: data['status_zavrseno'] ?? '',
-
 
     );
   }
